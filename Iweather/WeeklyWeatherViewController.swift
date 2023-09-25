@@ -4,7 +4,7 @@ class WeeklyWeatherViewController: UIViewController {
     
     private let currentLocation: UILabel = {
         let label = UILabel()
-        label.text = "[지역]"
+        label.text = "[지역표시]"
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
