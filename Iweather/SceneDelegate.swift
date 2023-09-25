@@ -17,9 +17,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
 
-        let tabBarController = TabBarController()
+//        let tabBarController = TabBarController()
 
-        window?.rootViewController = tabBarController
+//        window?.rootViewController = tabBarController
     }
 
     // 나머지 SceneDelegate 메서드는 비워둘 수 있습니다.
