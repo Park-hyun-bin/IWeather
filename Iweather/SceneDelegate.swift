@@ -11,17 +11,26 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
-
-//        let tabBarController = TabBarController()
-
-//        window?.rootViewController = tabBarController
+        
+        let viewController = WeeklyWeatherViewController()
+        
+        // Create a navigation controller with WeeklyWeatherViewController as the root view controller
+        let navigationController = UINavigationController(rootViewController: viewController)
+        
+        // Set the root view controller of the window to the navigation controller
+        window?.rootViewController = navigationController
+        
+        
+        //        let tabBarController = TabBarController()
+        
+        //        window?.rootViewController = tabBarController
     }
-
+    
     // 나머지 SceneDelegate 메서드는 비워둘 수 있습니다.
     func sceneDidDisconnect(_ scene: UIScene) {}
     func sceneDidBecomeActive(_ scene: UIScene) {}
