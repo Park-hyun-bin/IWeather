@@ -134,7 +134,7 @@
 				4E575ECB2AC1826100383AAD /* AppDelegate.swift */,
 				4E575F082AC1855900383AAD /* TabBarControlelr.swift */,
 				4E575ECD2AC1826100383AAD /* SceneDelegate.swift */,
-				4E575F062AC1841600383AAD /* MapViewController.swift */,
+				6BC0074C2AC2CF79005E544F /* Map */,
 				6BC007462AC20C14005E544F /* View */,
 				4E575F042AC1840E00383AAD /* DailyImageViewController.swift */,
 				4E575F022AC183F800383AAD /* WeatherViewController.swift */,
@@ -181,6 +181,14 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		6BC0074C2AC2CF79005E544F /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				4E575F062AC1841600383AAD /* MapViewController.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
 		7FD908A463C97E933295908E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,7 +209,6 @@
 				BF076469694A2447521F00E7 /* Pods-IweatherTests.debug.xcconfig */,
 				0E024E2E99447F71FC886CED /* Pods-IweatherTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

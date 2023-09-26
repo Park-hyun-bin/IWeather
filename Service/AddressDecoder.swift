@@ -1,10 +1,10 @@
+////
+////  Acood.swift
+////  Iweather
+////
+////  Created by t2023-m0049 on 2023/09/26.
+////
 //
-//  Acood.swift
-//  Iweather
-//
-//  Created by t2023-m0049 on 2023/09/26.
-//
-
 //import Foundation
 //
 //class AddressDecoder{
