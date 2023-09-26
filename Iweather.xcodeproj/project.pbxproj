@@ -18,9 +18,9 @@
 		4E575EF22AC1826300383AAD /* IweatherUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575EF12AC1826300383AAD /* IweatherUITestsLaunchTests.swift */; };
 		4E575F012AC183ED00383AAD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F002AC183ED00383AAD /* MainViewController.swift */; };
 		4E575F032AC183F800383AAD /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F022AC183F800383AAD /* WeatherViewController.swift */; };
-		4E575F052AC1840E00383AAD /* DailyImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F042AC1840E00383AAD /* DailyImageViewController.swift */; };
 		4E575F072AC1841600383AAD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F062AC1841600383AAD /* MapViewController.swift */; };
 		4E575F092AC1855900383AAD /* TabBarControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F082AC1855900383AAD /* TabBarControlelr.swift */; };
+		7F1F2E9A2AC26B2E0070A56B /* DailyImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1F2E992AC26B2E0070A56B /* DailyImageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,9 +56,9 @@
 		4E575EF12AC1826300383AAD /* IweatherUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IweatherUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4E575F002AC183ED00383AAD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4E575F022AC183F800383AAD /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
-		4E575F042AC1840E00383AAD /* DailyImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyImageViewController.swift; sourceTree = "<group>"; };
 		4E575F062AC1841600383AAD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4E575F082AC1855900383AAD /* TabBarControlelr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControlelr.swift; sourceTree = "<group>"; };
+		7F1F2E992AC26B2E0070A56B /* DailyImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +113,7 @@
 				4E575F082AC1855900383AAD /* TabBarControlelr.swift */,
 				4E575ECD2AC1826100383AAD /* SceneDelegate.swift */,
 				4E575F062AC1841600383AAD /* MapViewController.swift */,
-				4E575F042AC1840E00383AAD /* DailyImageViewController.swift */,
+				7F1F2E992AC26B2E0070A56B /* DailyImageViewController.swift */,
 				4E575F022AC183F800383AAD /* WeatherViewController.swift */,
 				4E575F002AC183ED00383AAD /* MainViewController.swift */,
 				4E575ECF2AC1826100383AAD /* ViewController.swift */,
@@ -278,7 +278,7 @@
 				4E575F072AC1841600383AAD /* MapViewController.swift in Sources */,
 				4E575F032AC183F800383AAD /* WeatherViewController.swift in Sources */,
 				4E575ED62AC1826100383AAD /* Iweather.xcdatamodeld in Sources */,
-				4E575F052AC1840E00383AAD /* DailyImageViewController.swift in Sources */,
+				7F1F2E9A2AC26B2E0070A56B /* DailyImageViewController.swift in Sources */,
 				4E575ECE2AC1826100383AAD /* SceneDelegate.swift in Sources */,
 				4E575F092AC1855900383AAD /* TabBarControlelr.swift in Sources */,
 			);
