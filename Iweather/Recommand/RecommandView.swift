@@ -9,11 +9,7 @@ import UIKit
 import SnapKit
 
 class RecomanndViewController: UIViewController {
-    
-    // back 버튼을 없애고 가운데에 아래 방향 화살표를 넣어서 SwipeDown으로 변경 고민중
-    // 기온별 옷차림
-    
-    
+
     private var backImage: UIImageView = {
         let backImage = UIImageView()
         backImage.image = UIImage(named: "4")
@@ -104,38 +100,38 @@ extension RecomanndViewController {
         view.addSubview(label)
         view.addSubview(menuLabel)
         
-        backImage.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        backImage.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
-        backbtn.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(16)
-            make.centerX.equalToSuperview()
+        backbtn.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(16)
+            $0.centerX.equalToSuperview()
         }
-        commentContainer.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(backbtn.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(16)
+        commentContainer.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.top.equalTo(backbtn.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
-        commentLabel.snp.makeConstraints { make in
-            make.centerX.centerY.equalTo(commentContainer)
+        commentLabel.snp.makeConstraints {
+            $0.centerX.centerY.equalTo(commentContainer)
         }
-        recoView.snp.makeConstraints { make in
-            make.top.equalTo(commentContainer.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(16)
+        recoView.snp.makeConstraints {
+            $0.top.equalTo(commentContainer.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
         }
-        textContainer.snp.makeConstraints { make in
-            make.height.equalTo(150)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.top.equalTo(recoView.snp.bottom).offset(20)
-            make.bottom.equalToSuperview().inset(58)
+        textContainer.snp.makeConstraints {
+            $0.height.equalTo(150)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(recoView.snp.bottom).offset(20)
+            $0.bottom.equalToSuperview().inset(58)
         }
-        label.snp.makeConstraints { make in
-            make.centerX.equalTo(textContainer.snp.centerX)
-            make.top.equalTo(textContainer.snp.top).offset(24)
+        label.snp.makeConstraints {
+            $0.centerX.equalTo(textContainer.snp.centerX)
+            $0.top.equalTo(textContainer.snp.top).offset(24)
         }
-        menuLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(textContainer.snp.centerX)
-            make.top.equalTo(label.snp.bottom).offset(24)
+        menuLabel.snp.makeConstraints {
+            $0.centerX.equalTo(textContainer.snp.centerX)
+            $0.top.equalTo(label.snp.bottom).offset(24)
         }
     }
     
