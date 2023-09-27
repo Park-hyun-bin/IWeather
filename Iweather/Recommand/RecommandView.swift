@@ -9,13 +9,15 @@ import UIKit
 import SnapKit
 
 class RecomanndViewController: UIViewController {
-
+    
+    private var recommandViewModel: RecommandViewModel!
+    
     private var backImage: UIImageView = {
         let backImage = UIImageView()
-        backImage.image = UIImage(named: "4")
+//        backImage.image = UIImage(named: bac)
         return backImage
     }()
-    
+
     private var backbtn: UIButton = {
         let backbtn = UIButton()
         backbtn.tintColor = .white
@@ -142,5 +144,7 @@ extension RecomanndViewController {
     @objc func backBtnTapped() {
         self.dismiss(animated: true, completion: nil)
     }
-}
+    
+   }
+
 

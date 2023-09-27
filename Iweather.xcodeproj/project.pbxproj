@@ -29,6 +29,7 @@
 		6BC0074B2AC2B78E005E544F /* AddressDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC0074A2AC2B78E005E544F /* AddressDecoder.swift */; };
 		7F2389D52AC3FD890053A262 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2389D42AC3FD890053A262 /* MapViewController.swift */; };
 		907C1B2E64FBD5C9BC675C2F /* Pods_IweatherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B630A58B978CE7116F0BB2A /* Pods_IweatherTests.framework */; };
+		F0444F032AC428030080187C /* RecommandViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08F86F22AC4248900E77236 /* RecommandViewModel.swift */; };
 		F0911BEF2AC401CF0071E5C5 /* RecommandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0911BEE2AC401CF0071E5C5 /* RecommandView.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		958A8EB4A2F7DEB971B0FBA9 /* Pods_Iweather_IweatherUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Iweather_IweatherUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF076469694A2447521F00E7 /* Pods-IweatherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IweatherTests.debug.xcconfig"; path = "Target Support Files/Pods-IweatherTests/Pods-IweatherTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DC77127346C730A4D04D19E3 /* Pods-Iweather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Iweather.release.xcconfig"; path = "Target Support Files/Pods-Iweather/Pods-Iweather.release.xcconfig"; sourceTree = "<group>"; };
+		F08F86F22AC4248900E77236 /* RecommandViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandViewModel.swift; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 1; };
 		F0911BEE2AC401CF0071E5C5 /* RecommandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -226,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				F0911BEE2AC401CF0071E5C5 /* RecommandView.swift */,
+				F08F86F22AC4248900E77236 /* RecommandViewModel.swift */,
 			);
 			path = Recommand;
 			sourceTree = "<group>";
@@ -453,6 +456,7 @@
 				6BC0074B2AC2B78E005E544F /* AddressDecoder.swift in Sources */,
 				4E575ECE2AC1826100383AAD /* SceneDelegate.swift in Sources */,
 				4E575F092AC1855900383AAD /* TabBarControlelr.swift in Sources */,
+				F0444F032AC428030080187C /* RecommandViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
