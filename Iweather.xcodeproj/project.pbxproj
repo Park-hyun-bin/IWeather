@@ -146,13 +146,8 @@
 				4E575F082AC1855900383AAD /* TabBarControlelr.swift */,
 				4E575ECD2AC1826100383AAD /* SceneDelegate.swift */,
 				6BC007492AC2B2FF005E544F /* Service */,
-				6BC0074C2AC2CF79005E544F /* Map */,
 				6BC007462AC20C14005E544F /* View */,
-				4E575F0F2AC283D600383AAD /* WeatherApi.swift */,
-				4E575F182AC2F56E00383AAD /* WeatherManager.swift */,
-				4E575F042AC1840E00383AAD /* DailyImageViewController.swift */,
-				4E575F022AC183F800383AAD /* WeatherViewController.swift */,
-				4E575F002AC183ED00383AAD /* MainViewController.swift */,
+				6BC007532AC465FA005E544F /* ViewModel */,
 				6BC0074D2AC41A03005E544F /* Model */,
 				F0911BED2AC4019A0071E5C5 /* Recommand */,
 				4E575ED72AC1826200383AAD /* Assets.xcassets */,
@@ -183,7 +178,11 @@
 		6BC007462AC20C14005E544F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6BC007472AC26940005E544F /* MapView.swift */,
+				4E575F042AC1840E00383AAD /* DailyImageViewController.swift */,
+				4E575F022AC183F800383AAD /* WeatherViewController.swift */,
+				4E575F002AC183ED00383AAD /* MainViewController.swift */,
+				7F2389D42AC3FD890053A262 /* MapViewController.swift */,
+				6BC007522AC4650E005E544F /* UIViewItem */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -196,21 +195,30 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
-		6BC0074C2AC2CF79005E544F /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				7F2389D42AC3FD890053A262 /* MapViewController.swift */,
-			);
-			path = Map;
-			sourceTree = "<group>";
-		};
 		6BC0074D2AC41A03005E544F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4E575F182AC2F56E00383AAD /* WeatherManager.swift */,
 				6BC0074E2AC41A2A005E544F /* Geocode.swift */,
 				6BC007502AC41AA8005E544F /* RouteData.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		6BC007522AC4650E005E544F /* UIViewItem */ = {
+			isa = PBXGroup;
+			children = (
+				6BC007472AC26940005E544F /* MapView.swift */,
+			);
+			path = UIViewItem;
+			sourceTree = "<group>";
+		};
+		6BC007532AC465FA005E544F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4E575F0F2AC283D600383AAD /* WeatherApi.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		7FD908A463C97E933295908E /* Frameworks */ = {
@@ -340,7 +348,7 @@
 			);
 			mainGroup = 4E575EBF2AC1826100383AAD;
 			packageReferences = (
-				4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya.git" */,
+				4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya" */,
 				4E575F152AC2C11700383AAD /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 4E575EC92AC1826100383AAD /* Products */;
@@ -802,7 +810,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya.git" */ = {
+		4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
 			requirement = {
@@ -823,7 +831,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		4E575F0B2AC2810C00383AAD /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya.git" */;
+			package = 4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
 		};
 		4E575F162AC2C11700383AAD /* SnapKit */ = {
