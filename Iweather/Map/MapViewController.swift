@@ -15,23 +15,20 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMapView()
-        mapView.textField.addTarget(self, action: #selector(tb), for: .editingDidBegin)
     }
 
     func setupMapView() {
         mapView = MapView(frame: view.frame)
         view.addSubview(mapView)
+
+        // Move the map to a specific location (example: Seoul, South Korea)
+        let latitude = 37.5665
+        let longitude = 126.9780
+        mapView.moveMapToLocation(latitude: latitude, longitude: longitude)
     }
-    
-    @objc func tb() {
-        
-        print("작동이됩니다.")
-        
-    }
-    
 }
 
-//extension MapPageViewController : UITextFieldDelegate{
+//extension MapViewController : UITextFieldDelegate{
 //    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 //        if let address = textField.text, !address.isEmpty {
 //            AddressDecoder.getGeocodeAddress(query: address) { [weak self] result in
