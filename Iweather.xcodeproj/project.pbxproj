@@ -242,7 +242,7 @@
 			);
 			mainGroup = 4E575EBF2AC1826100383AAD;
 			packageReferences = (
-				4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya" */,
+				4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya.git" */,
 				4E575F152AC2C11700383AAD /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 4E575EC92AC1826100383AAD /* Products */;
@@ -624,7 +624,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya" */ = {
+		4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
 			requirement = {
@@ -645,7 +645,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		4E575F0B2AC2810C00383AAD /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya" */;
+			package = 4E575F0A2AC2810C00383AAD /* XCRemoteSwiftPackageReference "Moya.git" */;
 			productName = Moya;
 		};
 		4E575F162AC2C11700383AAD /* SnapKit */ = {
