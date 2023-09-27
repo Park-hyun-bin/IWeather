@@ -30,11 +30,10 @@ class MapView: MKMapView, UITextFieldDelegate {
         // Setup text field
         textField = UITextField(frame: CGRect(x: 20, y: 70, width: frame.width - 40, height: 40))
         textField.backgroundColor = .white
-        textField.placeholder = "주소를 입력해라."
-        textField.delegate = self// Set the delegate
+        textField.placeholder = "Enter location"
+        textField.delegate = self
         textField.becomeFirstResponder()
         addSubview(textField)
-        
 
         // Setup floating button
         let buttonSize: CGFloat = 50
@@ -53,7 +52,14 @@ class MapView: MKMapView, UITextFieldDelegate {
 
     @objc func floatingButtonTapped() {
         // Implement the action for the floating button
-        print("버튼 작동")
+        print("Floating button tapped!")
+    }
+
+    func moveMapToLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05) // Zoom level
+        let region = MKCoordinateRegion(center: location, span: span)
+        setRegion(region, animated: true)
     }
 
     // MARK: - UITextFieldDelegate
@@ -61,9 +67,4 @@ class MapView: MKMapView, UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
     }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        print("작동완료")
-    }
 }
-
