@@ -48,7 +48,7 @@ class MapViewController: UIViewController {
 //                            mapView.moveCamera(NMFCameraUpdate(scrollTo: NMGLatLng(lat:Double(latitude)!, lng:Double(longitude)!)))
 //                        }
 //                    } else {
-//                        
+//
 //                        DispatchQueue.main.async{ [weak self] in
 //                            guard let self = self else {return }
 //                            showAlert(title: "에러", message: "주소를 찾을 수 없습니다")
