@@ -9,10 +9,6 @@ import SnapKit
 
 class RecomanndViewController: UIViewController {
     
-    // back 버튼을 없애고 가운데에 아래 방향 화살표를 넣어서 SwipeDown으로 변경 고민중
-    // 기온별 옷차림
-    
-    
     private var backImage: UIImageView = {
         let backImage = UIImageView()
         backImage.image = UIImage(named: "4")
@@ -38,10 +34,9 @@ class RecomanndViewController: UIViewController {
     
     private var commentLabel: UILabel = {
         let commentLabel = UILabel()
-  //      commentLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        commentLabel.font = UIFont.boldSystemFont(ofSize: 30)
         commentLabel.text = "스파가기 좋은날"
         commentLabel.textColor = .white
-        commentLabel.font = UIFont(name: "SUITE-Bold", size: 30)
         return commentLabel
     }()
     
