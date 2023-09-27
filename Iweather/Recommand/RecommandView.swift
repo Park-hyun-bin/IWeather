@@ -1,5 +1,5 @@
 //
-//  RecommandViewController.swift
+//  RecommandView.swift
 //  Iweather
 //
 //  Created by Hyunwoo Lee on 2023/09/25.

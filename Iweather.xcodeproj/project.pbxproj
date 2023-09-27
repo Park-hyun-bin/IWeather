@@ -22,7 +22,9 @@
 		4E575F072AC1841600383AAD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F062AC1841600383AAD /* MapViewController.swift */; };
 		4E575F092AC1855900383AAD /* TabBarControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F082AC1855900383AAD /* TabBarControlelr.swift */; };
 		F0F66E572AC3DE120095FAF6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F0F66E562AC3DE120095FAF6 /* SnapKit */; };
-		F0F717BB2AC18F850097F575 /* RecommandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F717BA2AC18F850097F575 /* RecommandViewController.swift */; };
+		F0F66E5A2AC3DE970095FAF6 /* RecommandModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F66E592AC3DE970095FAF6 /* RecommandModel.swift */; };
+		F0F66E5C2AC3DEA60095FAF6 /* RecommandViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F66E5B2AC3DEA60095FAF6 /* RecommandViewModel.swift */; };
+		F0F717BB2AC18F850097F575 /* RecommandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F717BA2AC18F850097F575 /* RecommandView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +63,9 @@
 		4E575F042AC1840E00383AAD /* DailyImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyImageViewController.swift; sourceTree = "<group>"; };
 		4E575F062AC1841600383AAD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		4E575F082AC1855900383AAD /* TabBarControlelr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControlelr.swift; sourceTree = "<group>"; };
-		F0F717BA2AC18F850097F575 /* RecommandViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandViewController.swift; sourceTree = "<group>"; };
+		F0F66E592AC3DE970095FAF6 /* RecommandModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandModel.swift; sourceTree = "<group>"; };
+		F0F66E5B2AC3DEA60095FAF6 /* RecommandViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandViewModel.swift; sourceTree = "<group>"; };
+		F0F717BA2AC18F850097F575 /* RecommandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,7 +125,7 @@
 				4E575F022AC183F800383AAD /* WeatherViewController.swift */,
 				4E575F002AC183ED00383AAD /* MainViewController.swift */,
 				4E575ECF2AC1826100383AAD /* ViewController.swift */,
-				F0F717BA2AC18F850097F575 /* RecommandViewController.swift */,
+				F0F66E582AC3DE7D0095FAF6 /* Recommand */,
 				4E575ED72AC1826200383AAD /* Assets.xcassets */,
 				4E575ED92AC1826200383AAD /* LaunchScreen.storyboard */,
 				4E575EDC2AC1826200383AAD /* Info.plist */,
@@ -145,6 +149,16 @@
 				4E575EF12AC1826300383AAD /* IweatherUITestsLaunchTests.swift */,
 			);
 			path = IweatherUITests;
+			sourceTree = "<group>";
+		};
+		F0F66E582AC3DE7D0095FAF6 /* Recommand */ = {
+			isa = PBXGroup;
+			children = (
+				F0F717BA2AC18F850097F575 /* RecommandView.swift */,
+				F0F66E592AC3DE970095FAF6 /* RecommandModel.swift */,
+				F0F66E5B2AC3DEA60095FAF6 /* RecommandViewModel.swift */,
+			);
+			path = Recommand;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,14 +298,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E575ED02AC1826100383AAD /* ViewController.swift in Sources */,
+				F0F66E5C2AC3DEA60095FAF6 /* RecommandViewModel.swift in Sources */,
 				4E575ECC2AC1826100383AAD /* AppDelegate.swift in Sources */,
 				4E575F012AC183ED00383AAD /* MainViewController.swift in Sources */,
 				4E575F072AC1841600383AAD /* MapViewController.swift in Sources */,
 				4E575F032AC183F800383AAD /* WeatherViewController.swift in Sources */,
-				F0F717BB2AC18F850097F575 /* RecommandViewController.swift in Sources */,
+				F0F717BB2AC18F850097F575 /* RecommandView.swift in Sources */,
 				4E575ED62AC1826100383AAD /* Iweather.xcdatamodeld in Sources */,
 				4E575F052AC1840E00383AAD /* DailyImageViewController.swift in Sources */,
 				4E575ECE2AC1826100383AAD /* SceneDelegate.swift in Sources */,
+				F0F66E5A2AC3DE970095FAF6 /* RecommandModel.swift in Sources */,
 				4E575F092AC1855900383AAD /* TabBarControlelr.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
