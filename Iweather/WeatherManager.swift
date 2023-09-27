@@ -1,26 +1,28 @@
-//
-//  WeatherManager.swift
-//  Iweather
-//
-//  Created by 김기현 on 2023/09/26.
-//
-
-import Foundation
-
 // MARK: - WeatherManager
 struct WeatherManager: Codable {
-    let temp: Double?
-    let humidity: Int?
+    let main: Main // Main 구조체 포함
     let wind: Wind?
     let weather: [Weather?]?
     let name: String?
     
     enum CodingKeys: String, CodingKey {
-        case temp
-        case humidity
+        case main // Main 구조체의 키는 main으로 예상
         case wind
         case weather
         case name
+    }
+}
+
+// Main 구조체 정의
+struct Main: Codable {
+    let temp: Double
+    let humidity: Int
+//    let feelsLike: Double // 필요한 다른 프로퍼티들도 추가할 수 있음
+
+    enum CodingKeys: String, CodingKey {
+        case temp
+        case humidity
+//        case feelsLike
     }
 }
 
@@ -41,11 +43,11 @@ struct Weather: Codable {
 extension WeatherManager {
     // 화씨
     var temperatureInFahrenheit: Double? {
-        return (temp! * 9/5) + 32
+        return (main.temp * 9/5) + 32
     }
     
     // 섭씨
     var temperatureInCelsius: Double? {
-        return (temp! - 32) * 5/9
+        return (main.temp - 32) * 5/9
     }
 }
