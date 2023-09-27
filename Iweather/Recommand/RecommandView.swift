@@ -11,7 +11,7 @@ class RecomanndViewController: UIViewController {
     
     private var backImage: UIImageView = {
         let backImage = UIImageView()
-        backImage.image = UIImage(named: "4")
+        backImage.image = UIImage(named: "background4")
         return backImage
     }()
     
@@ -42,7 +42,7 @@ class RecomanndViewController: UIViewController {
     
     private var recoView: UIImageView = {
         let recoView = UIImageView()
-        recoView.image = UIImage(named: "7")
+        recoView.image = UIImage(named: "comment2")
         recoView.alpha = 0.6
         recoView.layer.cornerRadius = 20
         recoView.clipsToBounds = true
