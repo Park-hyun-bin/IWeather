@@ -4,126 +4,148 @@
 //
 //  Created by Hyunwoo Lee on 2023/09/25.
 //
-
 import UIKit
+import SnapKit
 
-class RecoViewController: UIViewController {
+class RecomanndViewController: UIViewController {
+    
+    // back 버튼을 없애고 가운데에 아래 방향 화살표를 넣어서 SwipeDown으로 변경 고민중
+    // 기온별 옷차림
     
     
-    var backbtn: UIButton = {
+    private var backImage: UIImageView = {
+        let backImage = UIImageView()
+        backImage.image = UIImage(named: "4")
+        return backImage
+    }()
+    
+    private var backbtn: UIButton = {
         let backbtn = UIButton()
-        backbtn.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        backbtn.tintColor = .white
+        backbtn.setImage(UIImage(systemName: "chevron.compact.down"), for: .normal)
         backbtn.frame = CGRect(x: 0, y: 0, width: 21, height: 17.5)
         return backbtn
     }()
     
-    private var recoView: UIView = {
-        let recoView = UIView()
-        recoView.backgroundColor = .gray
+    private var commentContainer: UIView = {
+        let commentContainer = UIView()
+        commentContainer.backgroundColor = .white
+        commentContainer.layer.cornerRadius = 20
+        commentContainer.clipsToBounds = true
+        commentContainer.alpha = 0.3
+        return commentContainer
+    }()
+    
+    private var commentLabel: UILabel = {
+        let commentLabel = UILabel()
+  //      commentLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        commentLabel.text = "스파가기 좋은날"
+        commentLabel.textColor = .white
+        commentLabel.font = UIFont(name: "SUITE-Bold", size: 30)
+        return commentLabel
+    }()
+    
+    private var recoView: UIImageView = {
+        let recoView = UIImageView()
+        recoView.image = UIImage(named: "7")
+        recoView.alpha = 0.6
+        recoView.layer.cornerRadius = 20
+        recoView.clipsToBounds = true
         return recoView
     }()
     
-    private var label1: UILabel = {
-        let label1 = UILabel()
-        label1.text = "산책하기 좋은날"
-        label1.font = UIFont.systemFont(ofSize: 30)
-        return label1
+    private var textContainer: UIView = {
+        let textContainer = UIView()
+        textContainer.backgroundColor = .white
+        textContainer.layer.cornerRadius = 20
+        textContainer.clipsToBounds = true
+        textContainer.alpha = 0.3
+        return textContainer
     }()
     
-    private var label2: UILabel = {
-        let label2 = UILabel()
-        label2.text = "오늘 추천 메뉴"
-        label2.font = UIFont.systemFont(ofSize: 22)
-        return label2
+    private var label: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.text = "오늘 추천 메뉴"
+        label.textColor = .white
+        return label
     }()
     
-    private var label3: UILabel = {
-        let label3 = UILabel()
-        label3.text = """
-                          막걸리에 파전
-                          어떠신가요?
-                          """
-        label3.font = UIFont.systemFont(ofSize: 16)
-        label3.numberOfLines = 2
-        return label3
+    private var menuLabel: UILabel = {
+        let menuLabel = UILabel()
+        menuLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        menuLabel.text = """
+                         찜질방에서 맥반석 계란과
+                         식혜 한잔 어떠신가요?
+                         """
+        menuLabel.numberOfLines = 3
+        menuLabel.textColor = .white
+        return menuLabel
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        swipeRecognizer()
-        setGradient(color1:UIColor.green, color2:UIColor.yellow, color3: UIColor.red)
-        setup()
-        recoConfigureUI()
+        initConstraints()
+        buttonSetup()
     }
 }
 
-extension RecoViewController {
-    func setup() {
-        view.addSubview(recoView)
-        view.addSubview(label1)
-        view.addSubview(label2)
-        view.addSubview(label3)
-        view.addSubview(backbtn)
-        backbtn.addTarget(self, action: #selector(backBtnTapped), for: .touchUpInside)
-    }
-    func recoConfigureUI() {
-        recoView.translatesAutoresizingMaskIntoConstraints = false
-        label1.translatesAutoresizingMaskIntoConstraints = false
-        label2.translatesAutoresizingMaskIntoConstraints = false
-        label3.translatesAutoresizingMaskIntoConstraints = false
-        backbtn.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            //            backbtn.widthAnchor.constraint(equalToConstant: 21),
-            //            backbtn.heightAnchor.constraint(equalToConstant: 17.5),
-            backbtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            backbtn.topAnchor.constraint(equalTo: view.topAnchor, constant: 58),
-            
-            recoView.topAnchor.constraint(equalTo: backbtn.bottomAnchor, constant: 10),
-            recoView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -300),
-            recoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            recoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            
-            label1.centerXAnchor.constraint(equalTo: recoView.centerXAnchor),
-            label1.topAnchor.constraint(equalTo: recoView.topAnchor, constant: 100),
-            
-            label2.centerXAnchor.constraint(equalTo: recoView.centerXAnchor),
-            label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 100),
-            
-            label3.centerXAnchor.constraint(equalTo: recoView.centerXAnchor),
-            label3.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 20)
-            
-        ])
-    }
+extension RecomanndViewController {
     
-    func setGradient(color1: UIColor,color2: UIColor, color3: UIColor){
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.colors = [color1.cgColor, color2.cgColor, color3.cgColor]
-        gradient.locations = [0.0, 0.4, 0.8, 1.0]
-        gradient.startPoint = CGPoint(x: 0.5, y: 1.0)
-        gradient.endPoint = CGPoint(x: 0.5, y: 0.0)
-        gradient.frame = view.bounds
-        view.layer.addSublayer(gradient)
-    }
-    func swipeRecognizer() {
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture(_:)))
-        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
-        self.view.addGestureRecognizer(swipeRight)
-    }
-    @objc func backBtnTapped() {
+    func initConstraints() {
+        view.addSubview(backImage)
+        view.addSubview(commentContainer)
+        view.addSubview(commentLabel)
+        view.addSubview(recoView)
+        view.addSubview(backbtn)
+        view.addSubview(textContainer)
+        view.addSubview(label)
+        view.addSubview(menuLabel)
         
-    }
-    @objc func swipeGesture(_ gesture: UIGestureRecognizer){
-        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
-            switch swipeGesture.direction{
-            case UISwipeGestureRecognizer.Direction.right:
-                // 스와이프 시, 원하는 기능 구현.
-                self.dismiss(animated: true, completion: nil)
-            default: break
-            }
+        backImage.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        backbtn.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(16)
+            make.centerX.equalToSuperview()
+        }
+        commentContainer.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.top.equalTo(backbtn.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
+        commentLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalTo(commentContainer)
+        }
+        recoView.snp.makeConstraints { make in
+            make.top.equalTo(commentContainer.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
+        textContainer.snp.makeConstraints { make in
+            make.height.equalTo(150)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(recoView.snp.bottom).offset(20)
+            make.bottom.equalToSuperview().inset(58)
+        }
+        label.snp.makeConstraints { make in
+            make.centerX.equalTo(textContainer.snp.centerX)
+            make.top.equalTo(textContainer.snp.top).offset(24)
+        }
+        menuLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(textContainer.snp.centerX)
+            make.top.equalTo(label.snp.bottom).offset(24)
         }
     }
+    
+    func buttonSetup() {
+        backbtn.addTarget(self, action: #selector(backBtnTapped), for: .touchUpInside)
+    }
+    
+    @objc func backBtnTapped() {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
+
 
 

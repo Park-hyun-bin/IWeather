@@ -21,6 +21,7 @@
 		4E575F052AC1840E00383AAD /* DailyImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F042AC1840E00383AAD /* DailyImageViewController.swift */; };
 		4E575F072AC1841600383AAD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F062AC1841600383AAD /* MapViewController.swift */; };
 		4E575F092AC1855900383AAD /* TabBarControlelr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E575F082AC1855900383AAD /* TabBarControlelr.swift */; };
+		F0F66E572AC3DE120095FAF6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F0F66E562AC3DE120095FAF6 /* SnapKit */; };
 		F0F717BB2AC18F850097F575 /* RecommandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F717BA2AC18F850097F575 /* RecommandViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0F66E572AC3DE120095FAF6 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +163,9 @@
 			dependencies = (
 			);
 			name = Iweather;
+			packageProductDependencies = (
+				F0F66E562AC3DE120095FAF6 /* SnapKit */,
+			);
 			productName = Iweather;
 			productReference = 4E575EC82AC1826100383AAD /* Iweather.app */;
 			productType = "com.apple.product-type.application";
@@ -233,6 +238,9 @@
 				Base,
 			);
 			mainGroup = 4E575EBF2AC1826100383AAD;
+			packageReferences = (
+				F0F66E552AC3DE120095FAF6 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 4E575EC92AC1826100383AAD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -610,6 +618,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F0F66E552AC3DE120095FAF6 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F0F66E562AC3DE120095FAF6 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F0F66E552AC3DE120095FAF6 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		4E575ED42AC1826100383AAD /* Iweather.xcdatamodeld */ = {
