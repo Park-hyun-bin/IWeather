@@ -30,8 +30,9 @@ class MapView: MKMapView, UITextFieldDelegate {
         // Setup text field
         textField = UITextField(frame: CGRect(x: 20, y: 70, width: frame.width - 40, height: 40))
         textField.backgroundColor = .white
-        textField.placeholder = "Enter location"
+        textField.placeholder = "주소를 입력해주세요."
         textField.delegate = self
+        textField.layer.cornerRadius = 20.0
         textField.becomeFirstResponder()
         addSubview(textField)
 
@@ -45,6 +46,7 @@ class MapView: MKMapView, UITextFieldDelegate {
         floatingButton = UIButton(frame: buttonFrame)
         floatingButton.backgroundColor = .blue
         floatingButton.setTitle("Button", for: .normal)
+        floatingButton.layer.cornerRadius = 20.0
         floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
 
         addSubview(floatingButton)
