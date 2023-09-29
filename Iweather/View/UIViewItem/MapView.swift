@@ -9,25 +9,25 @@ import UIKit
 import MapKit
 
 class MapView: MKMapView, UITextFieldDelegate {
-
+    
     var floatingButton: UIButton!
     var textField: UITextField!
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
-
+    
     private func commonInit() {
         mapType = .standard
         showsUserLocation = true
-
-        // Setup text field
+        
+        // 텍스트 필도
         textField = UITextField(frame: CGRect(x: 20, y: 70, width: frame.width - 40, height: 40))
         textField.backgroundColor = .white
         textField.placeholder = "주소를 입력해주세요."
@@ -35,38 +35,32 @@ class MapView: MKMapView, UITextFieldDelegate {
         textField.layer.cornerRadius = 20.0
         textField.becomeFirstResponder()
         addSubview(textField)
-
-        // Setup floating button
+        
+        // 떠있는 버튼
         let buttonSize: CGFloat = 50
         let buttonFrame = CGRect(x: frame.width - buttonSize - 20,
                                  y: frame.height - buttonSize - 100,
                                  width: buttonSize,
                                  height: buttonSize)
-
+        
         floatingButton = UIButton(frame: buttonFrame)
-        floatingButton.backgroundColor = .blue
+        floatingButton.backgroundColor = .cyan
         floatingButton.setTitle("Button", for: .normal)
         floatingButton.layer.cornerRadius = 20.0
         floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
-
+        
         addSubview(floatingButton)
     }
-
+    
     @objc func floatingButtonTapped() {
         // Implement the action for the floating button
-        print("Floating button tapped!")
+        print("입력")
     }
-
+    
     func moveMapToLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05) // Zoom level
         let region = MKCoordinateRegion(center: location, span: span)
         setRegion(region, animated: true)
-    }
-
-    // MARK: - UITextFieldDelegate
-
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        return true
     }
 }
