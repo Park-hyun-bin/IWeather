@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 enum WeatherAPI {
-    case getWeatherForCity(_ cityName: String? = nil)
+    case getWeatherForCity(_ cityName: String? = nil, days: Int)
 }
 
 extension WeatherAPI: TargetType {
@@ -21,7 +21,7 @@ extension WeatherAPI: TargetType {
     var path: String {
         switch self {
         case .getWeatherForCity:
-            return "/weather"
+            return "/forecast"
         }
     }
 
@@ -34,12 +34,13 @@ extension WeatherAPI: TargetType {
 
     var task: Task {
         switch self {
-        case .getWeatherForCity(_):
+        case .getWeatherForCity(let days):
             let parameters: [String: Any] = [
                 "q": "busan",
                 "appid": "e8aeafe9abc4ec56d53a28782b1991f8",
                 "units": "metric", // 온도를 섭씨로
-                "lang": "kr" // 한국어로
+                "lang": "kr", // 한국어로
+                "cnt": 5
             ]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         }
