@@ -56,9 +56,18 @@ class WeatherTableViewCell: UITableViewCell {
         let dateString = dateFormatter.string(from: date)
 
         dateLabel.text = dateString
-        weatherImageView.image = UIImage(named: weatherData.icon)
 
-        // 화씨에서 섭씨로 변환
+        if let imageUrl = URL(string: "https://openweathermap.org/img/w/\(weatherData.icon).png") {
+                    DispatchQueue.global().async { [weak self] in
+                        if let data = try? Data(contentsOf: imageUrl) {
+                            if let image = UIImage(data: data) {
+                                DispatchQueue.main.async {
+                                    self?.weatherImageView.image = image
+                                }
+                            }
+                        }
+                    }
+                }
         let celsiusTemperature = (weatherData.temperature) + 273.15
         temperatureLabel.text = "\(String(format: "%.1f", celsiusTemperature))°C"
     }
