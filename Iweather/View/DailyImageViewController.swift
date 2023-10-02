@@ -1,8 +1,33 @@
 
 import UIKit
+import Moya
 
 class DailyImageViewController: UIViewController {
     
+    private let weatherProvider = MoyaProvider<WeatherAPI>()
+
+    func updateWeatherData(latitude: Double, longitude: Double) {
+        weatherProvider.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 1)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                do {
+                    let weatherData = try JSONDecoder().decode(Welcome.self, from: response.data)
+                    if let firstDayWeather = weatherData.list.first {
+                        DispatchQueue.main.async {
+                            self?.highTemperatureLabel.text = "\(firstDayWeather.main.tempMax)°"
+                            self?.lowTemperatureLabel.text = "\(firstDayWeather.main.tempMin)°"
+                            self?.humidityLabel.text = "습도 : \(firstDayWeather.main.humidity)%"
+                        }
+                    }
+                } catch {
+                    print("Error decoding weather data: \(error)")
+                }
+            case .failure(let error):
+                print("Error fetching weather data: \(error)")
+            }
+        }
+    }
+
     private let currentLocation: UILabel = {
         let label = UILabel()
         label.text = "[서울]"
@@ -23,11 +48,24 @@ class DailyImageViewController: UIViewController {
         view.addSubview(backgroundImage)
         view.sendSubviewToBack(backgroundImage)
         view.addSubview(currentLocation)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLocationUpdate(_:)), name: .didUpdateLocation, object: nil)
         setupDayViews()
         setupLayout()
         
     }
+    
+    @objc func handleLocationUpdate(_ notification: Notification) {
+        if let address = notification.userInfo?["address"] as? String {
+            currentLocation.text = "[\(address)]"
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .didUpdateLocation, object: nil)
+    }
+
+    
+    
     
     private func setupDayViews() {
         let dateFormatter = DateFormatter()
@@ -138,8 +176,5 @@ class DailyImageViewController: UIViewController {
             previousView = dayView
         }
     }
-    
-    
-    
 }
 

@@ -65,6 +65,7 @@ extension MapViewController: UITextFieldDelegate {
                             DispatchQueue.main.async {
                                 self.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)), animated: true)
                             }
+                            NotificationCenter.default.post(name: .didUpdateLocation, object: nil, userInfo: ["address": firstAddress.jibunAddress])
                         } else {
                             self.showAlert(title: "오류", message: "Invalid coordinates")
                         }
@@ -93,3 +94,6 @@ extension UIViewController {
     }
 }
 
+extension Notification.Name {
+    static let didUpdateLocation = Notification.Name("didUpdateLocation")
+}
