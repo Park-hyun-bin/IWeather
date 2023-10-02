@@ -5,6 +5,15 @@ import SnapKit
 class WeatherViewController: UIViewController {
     private let weatherService = MoyaProvider<WeatherAPI>(plugins: [NetworkLoggerPlugin()])
 
+
+    private let TodayWeatherImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.alpha = 0.0
+        imageView.image = UIImage(named: "clearSky")
+
+        return imageView
+    }()
     private let cityNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 24)
@@ -48,8 +57,8 @@ class WeatherViewController: UIViewController {
         tableView.register(WeatherTableViewCell.self, forCellReuseIdentifier: WeatherTableViewCell.identifier)
         return tableView
     }()
-
     private var weatherDataArray: [WeatherData] = []
+    private var Array: [WeatherData] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +66,7 @@ class WeatherViewController: UIViewController {
         let exclude = "hourly,daily"
         getWeatherData(exclude: exclude)
         FCChangeButton.addTarget(self, action: #selector(FCChange), for: .touchUpInside)
+        animationImageView()
     }
 
     private func configureUI() {
@@ -67,6 +77,7 @@ class WeatherViewController: UIViewController {
         view.addSubview(weatherDescriptionLabel)
         view.addSubview(FCChangeButton)
         view.addSubview(tableView)
+        view.addSubview(TodayWeatherImageView)
 
         FCChangeButton.snp.makeConstraints {
             $0.top.equalTo(cityNameLabel.snp.top)
@@ -102,11 +113,23 @@ class WeatherViewController: UIViewController {
             $0.top.equalTo(weatherDescriptionLabel.snp.bottom).offset(20)
             $0.leading.trailing.bottom.equalToSuperview()
         }
+        TodayWeatherImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
+
 
         view.backgroundColor = .white
 
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    private func animationImageView() {
+        UIView.animate(withDuration: 0.8, delay: 0.5, options: .curveEaseIn, animations: { [weak self] in
+            self?.TodayWeatherImageView.alpha = 0.7
+        }, completion: { [unowned self] _ in
+
+        })
     }
 
     private func getWeatherData(exclude: String) {

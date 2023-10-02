@@ -167,6 +167,7 @@
 				4E575F042AC1840E00383AAD /* DailyImageViewController.swift */,
 				4E575F022AC183F800383AAD /* WeatherViewController.swift */,
 				4E575F002AC183ED00383AAD /* MainViewController.swift */,
+				4EF566B92AC9303900D69CDC /* WeatherTableViewCell.swift */,
 				7F2389D42AC3FD890053A262 /* MapViewController.swift */,
 				F0911BEE2AC401CF0071E5C5 /* RecommandViewController.swift */,
 				6BC007522AC4650E005E544F /* UIViewItem */,
@@ -187,7 +188,6 @@
 			children = (
 				4E575F182AC2F56E00383AAD /* WeatherManager.swift */,
 				4EF566BB2AC9346300D69CDC /* WeatherData.swift */,
-				4EF566B92AC9303900D69CDC /* WeatherTableViewCell.swift */,
 				6BC0074E2AC41A2A005E544F /* Geocode.swift */,
 				6BC007502AC41AA8005E544F /* RouteData.swift */,
 			);
