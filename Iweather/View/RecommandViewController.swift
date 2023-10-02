@@ -193,18 +193,18 @@ extension RecomanndViewController {
     func determinePhotoToShow(currentTime: Date, sunriseStart: Date, sunriseEnd: Date, sunsetStart: Date, sunsetEnd: Date) {
         // 일출 진행중 사진
         if currentTime >= sunriseStart && currentTime <= sunriseEnd {
-            return backImage.image = UIImage(named: "1")
+            return backImage.image = UIImage(named: "sunrise")
         }
         // 일몰 진행중 사진
         if currentTime >= sunsetStart && currentTime <= sunsetEnd {
-            return backImage.image = UIImage(named: "2")
+            return backImage.image = UIImage(named: "sunset")
         }
         // 밤 사진
         if currentTime >= sunsetEnd || currentTime <= sunriseStart {
-            return backImage.image = UIImage(named: "3")
+            return backImage.image = UIImage(named: "night")
         }
         // 낮 사진
-        return backImage.image = UIImage(named: "4")
+        return backImage.image = UIImage(named: "day")
     }
     
     private func showError(message: String) {
