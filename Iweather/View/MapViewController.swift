@@ -12,25 +12,44 @@ class MapViewController: UIViewController {
 
     var mapView: MKMapView!
     var textField: UITextField!
+    var containerView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupContainerView()
         setupMapView()
+        setupTextField()
+    }
+
+    func setupContainerView() {
+        // Create a container view
+        containerView = UIView(frame: CGRect(x: 20, y: 120, width: view.frame.width - 40, height: 400))
+        containerView.backgroundColor = .clear
+        view.addSubview(containerView)
     }
 
     func setupMapView() {
-        mapView = MKMapView(frame: view.frame)
-        view.addSubview(mapView)
+        mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: containerView.frame.width, height: 300))
+        mapView.mapType = .standard
+        mapView.showsUserLocation = true
+        mapView.layer.cornerRadius = 10.0
+        mapView.layer.masksToBounds = true
 
-        textField = UITextField(frame: CGRect(x: 20, y: 70, width: view.frame.width - 40, height: 40))
+        containerView.addSubview(mapView)
+    }
+
+
+    func setupTextField() {
+        textField = UITextField(frame: CGRect(x: 0, y: 320, width: containerView.frame.width, height: 40))
         textField.backgroundColor = .white
         textField.placeholder = "주소를 입력하세요."
         textField.delegate = self
-        textField.becomeFirstResponder()
-        textField.layer.cornerRadius = 20.0
-        view.addSubview(textField)
+        textField.layer.cornerRadius = 10.0
+        containerView.addSubview(textField)
     }
 }
+
+
 
 extension MapViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -47,14 +66,14 @@ extension MapViewController: UITextFieldDelegate {
                                 self.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)), animated: true)
                             }
                         } else {
-                            self.showAlert(title: "Error", message: "Invalid coordinates")
+                            self.showAlert(title: "오류", message: "Invalid coordinates")
                         }
                     } else {
-                        self.showAlert(title: "Error", message: "No matching location found")
+                        self.showAlert(title: "오류", message: "No matching location found")
                     }
                 case .failure(let error):
                     DispatchQueue.main.async {
-                        self.showAlert(title: "Error", message: "Geocode error: \(error.localizedDescription)")
+                        self.showAlert(title: "오", message: "Geocode error: \(error.localizedDescription)")
                     }
                 }
             }
