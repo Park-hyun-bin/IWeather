@@ -1,53 +1,87 @@
-// MARK: - WeatherManager
-struct WeatherManager: Codable {
-    let main: Main // Main 구조체 포함
-    let wind: Wind?
-    let weather: [Weather?]?
-    let name: String?
-    
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
+//
+//   let welcome = try? JSONDecoder().decode(Welcome.self, from: jsonData)
+
+import Foundation
+
+// MARK: - Welcome
+struct Welcome: Codable {
+    let cod: String
+    let message, cnt: Int
+    let list: [List]
+    let city: City
+}
+
+// MARK: - City
+struct City: Codable {
+    let id: Int
+    let name: String
+    let coord: Coord
+    let country: String
+    let population, timezone, sunrise, sunset: Int
+}
+
+// MARK: - Coord
+struct Coord: Codable {
+    let lat, lon: Double
+}
+
+// MARK: - List
+struct List: Codable {
+    let dt: Int
+    let main: Main
+    let weather: [Weather]
+    let clouds: Clouds
+    let wind: Wind
+    let visibility, pop: Int
+    let sys: Sys
+    let dtTxt: String?
+
     enum CodingKeys: String, CodingKey {
-        case main // Main 구조체의 키는 main으로 예상
-        case wind
-        case weather
-        case name
+        case dt, main, weather, clouds, wind, visibility, pop, sys
+        case dtTxt
     }
 }
 
-// Main 구조체 정의
+// MARK: - Clouds
+struct Clouds: Codable {
+    let all: Int
+}
+
+// MARK: - Main
 struct Main: Codable {
-    let temp: Double
-    let humidity: Int
-//    let feelsLike: Double // 필요한 다른 프로퍼티들도 추가할 수 있음
+    let temp, feelsLike, tempMin, tempMax: Double
+    let pressure, seaLevel, grndLevel, humidity: Int
+    let tempKf: Double?
 
     enum CodingKeys: String, CodingKey {
         case temp
+        case feelsLike = "feels_like" // "feels_like"에 대한 코딩 키 지정
+        case tempMin = "temp_min" // "temp_min"에 대한 코딩 키 지정
+        case tempMax = "temp_max" // "temp_max"에 대한 코딩 키 지정
+        case pressure
+        case seaLevel = "sea_level" // "sea_level"에 대한 코딩 키 지정
+        case grndLevel = "grnd_level" // "grnd_level"에 대한 코딩 키 지정
         case humidity
-//        case feelsLike
+        case tempKf
     }
 }
 
-// MARK: - Wind
-struct Wind: Codable {
-    let speed: Double?
-    let deg: Int?
-    let gust: Double?
+// MARK: - Sys
+struct Sys: Codable {
+    let pod: String
 }
 
 // MARK: - Weather
 struct Weather: Codable {
-    let main: String?
-    let description: String?
-    let icon: String?
+    let id: Int
+    let main, description, icon: String
 }
 
-extension WeatherManager {
-    // 화씨
-    var temperatureInFahrenheit: Double? {
-        return (main.temp * 9/5) + 32
-    }
-    
-    // 섭씨
-    var temperatureInCelsius: Double? {
-        return (main.temp - 32) * 5/9
-    }
+// MARK: - Wind
+struct Wind: Codable {
+    let speed: Double
+    let deg: Int
+    let gust: Double
 }
