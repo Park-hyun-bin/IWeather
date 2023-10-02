@@ -36,26 +36,8 @@ class MapView: MKMapView, UITextFieldDelegate {
         textField.becomeFirstResponder()
         addSubview(textField)
         
-        // 떠있는 버튼
-        let buttonSize: CGFloat = 50
-        let buttonFrame = CGRect(x: frame.width - buttonSize - 20,
-                                 y: frame.height - buttonSize - 100,
-                                 width: buttonSize,
-                                 height: buttonSize)
-        
-        floatingButton = UIButton(frame: buttonFrame)
-        floatingButton.backgroundColor = .cyan
-        floatingButton.setTitle("Button", for: .normal)
-        floatingButton.layer.cornerRadius = 20.0
-        floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
-        
-        addSubview(floatingButton)
     }
-    
-    @objc func floatingButtonTapped() {
-        // Implement the action for the floating button
-        print("입력")
-    }
+
     
     func moveMapToLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
