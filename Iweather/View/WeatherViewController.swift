@@ -81,6 +81,7 @@ class WeatherViewController: UIViewController {
         view.addSubview(weatherDescriptionLabel)
         view.addSubview(FCChangeButton)
         view.addSubview(tableView)
+        updateBackgroundImage()
         tableView.backgroundColor = .clear
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(backgroundImageTap))
@@ -191,7 +192,19 @@ class WeatherViewController: UIViewController {
         let RecommandVC = RecomanndViewController()
         self.present(RecommandVC, animated: true, completion: nil)
     }
-}
+    @objc private func updateBackgroundImage() {
+        let currentTime = WeatherUtility.getCurrentTime()
+        let sunriseTime = WeatherUtility.getSunriseTime()
+        let sunsetTime = WeatherUtility.getSunsetTime()
+
+        if currentTime >= sunriseTime && currentTime <= sunsetTime {
+            TodayWeatherImageView.image = UIImage(named: "evening")
+              } else {
+                  TodayWeatherImageView.image = UIImage(named: "evening")
+              }
+          }
+
+    }
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
