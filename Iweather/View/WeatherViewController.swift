@@ -134,7 +134,7 @@ class WeatherViewController: UIViewController {
 
     private func getWeatherData(exclude: String) {
         print("요청중")
-        weatherService.request(.getWeatherForCity("busan", days: 5)) { result in
+        weatherService.request(.getWeatherForCity("seoul", days: 5)) { result in
             switch result {
             case let .success(response):
                 do {
