@@ -8,7 +8,7 @@ class WeatherViewController: UIViewController {
 
     private let TodayWeatherImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleToFill
         imageView.alpha = 0.0
         imageView.image = UIImage(named: "clearSky")
 
@@ -39,6 +39,8 @@ class WeatherViewController: UIViewController {
 
     private let weatherDescriptionLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 20)
         return label
     }()
 
