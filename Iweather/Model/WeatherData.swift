@@ -12,3 +12,4 @@ struct WeatherData {
     let icon: String
     let temperature: Double
 }
+

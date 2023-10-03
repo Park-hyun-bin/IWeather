@@ -6,27 +6,35 @@ class DailyImageViewController: UIViewController {
     
     private let weatherProvider = MoyaProvider<WeatherAPI>()
 
-//    func updateWeatherData(latitude: Double, longitude: Double) {
-//        weatherProvider.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 1)) { [weak self] result in
-//            switch result {
-//            case .success(let response):
-//                do {
-//                    let weatherData = try JSONDecoder().decode(Welcome.self, from: response.data)
-//                    if let firstDayWeather = weatherData.list.first {
-//                        DispatchQueue.main.async {
-//                            self?.highTemperatureLabel.text = "\(firstDayWeather.main.tempMax)°"
-//                            self?.lowTemperatureLabel.text = "\(firstDayWeather.main.tempMin)°"
-//                            self?.humidityLabel.text = "습도 : \(firstDayWeather.main.humidity)%"
-//                        }
-//                    }
-//                } catch {
-//                    print("Error decoding weather data: \(error)")
-//                }
-//            case .failure(let error):
-//                print("Error fetching weather data: \(error)")
-//            }
-//        }
-//    }
+    private var highTemperatureLabels: [UILabel] = []
+    private var lowTemperatureLabels: [UILabel] = []
+    private var humidityLabels: [UILabel] = []
+
+    
+    
+    func updateWeatherData(latitude: Double, longitude: Double) {
+        weatherProvider.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 4)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                do {
+                    let weatherData = try JSONDecoder().decode(Welcome.self, from: response.data)
+                    for (index, dayWeather) in weatherData.list.prefix(4).enumerated() {
+                        DispatchQueue.main.async {
+                            
+                            self?.highTemperatureLabels[index].text = "\(dayWeather.main.tempMax)°"
+                            self?.lowTemperatureLabels[index].text = "\(dayWeather.main.tempMin)°"
+                            self?.humidityLabels[index].text = "습도 : \(dayWeather.main.humidity)%"
+                        }
+                    }
+                    
+                } catch {
+                    print("Error decoding weather data: \(error)")
+                }
+            case .failure(let error):
+                print("Error fetching weather data: \(error)")
+            }
+        }
+    }
 
     private let currentLocation: UILabel = {
         let label = UILabel()
@@ -49,16 +57,25 @@ class DailyImageViewController: UIViewController {
         view.sendSubviewToBack(backgroundImage)
         view.addSubview(currentLocation)
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationUpdate(_:)), name: .didUpdateLocation, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWeatherLocationUpdate(_:)), name: .didUpdateLocationForWeather, object: nil)
+
         setupDayViews()
         setupLayout()
         
     }
     
-    @objc func handleLocationUpdate(_ notification: Notification) {
-        if let address = notification.userInfo?["address"] as? String {
-            currentLocation.text = "[\(address)]"
+    @objc func handleWeatherLocationUpdate(_ notification: Notification) {
+        if let latitude = notification.userInfo?["latitude"] as? Double,
+           let longitude = notification.userInfo?["longitude"] as? Double {
+            updateWeatherData(latitude: latitude, longitude: longitude)
         }
     }
+    @objc func handleLocationUpdate(_ notification: Notification) {
+            if let address = notification.userInfo?["address"] as? String {
+                currentLocation.text = "[\(address)]"
+            }
+        }
+
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .didUpdateLocation, object: nil)
@@ -103,6 +120,9 @@ class DailyImageViewController: UIViewController {
             humidityLabel.textColor = .black
             humidityLabel.textAlignment = .center
             
+            highTemperatureLabels.append(highTemperatureLabel)
+            lowTemperatureLabels.append(lowTemperatureLabel)
+            humidityLabels.append(humidityLabel)
 
             
             let date = calendar.date(byAdding: .day, value: i, to: currentDate)!
@@ -178,3 +198,6 @@ class DailyImageViewController: UIViewController {
     }
 }
 
+extension Notification.Name {
+    static let didUpdateLocationForWeather = Notification.Name("didUpdateLocationForWeather")
+}
