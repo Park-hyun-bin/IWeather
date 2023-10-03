@@ -55,6 +55,7 @@ class WeatherViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(WeatherTableViewCell.self, forCellReuseIdentifier: WeatherTableViewCell.identifier)
+        
         return tableView
     }()
     private var weatherDataArray: [WeatherData] = []
@@ -70,6 +71,7 @@ class WeatherViewController: UIViewController {
     }
 
     private func configureUI() {
+        view.addSubview(TodayWeatherImageView)
         view.addSubview(cityNameLabel)
         view.addSubview(temperatureLabel)
         view.addSubview(humidityLabel)
@@ -77,7 +79,11 @@ class WeatherViewController: UIViewController {
         view.addSubview(weatherDescriptionLabel)
         view.addSubview(FCChangeButton)
         view.addSubview(tableView)
-        view.addSubview(TodayWeatherImageView)
+        tableView.backgroundColor = .clear
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(backgroundImageTap))
+        TodayWeatherImageView.isUserInteractionEnabled = true
+        TodayWeatherImageView.addGestureRecognizer(tap)
 
         FCChangeButton.snp.makeConstraints {
             $0.top.equalTo(cityNameLabel.snp.top)
@@ -179,11 +185,18 @@ class WeatherViewController: UIViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
+    @objc private func backgroundImageTap() {
+        let RecommandVC = RecomanndViewController()
+        self.present(RecommandVC, animated: true, completion: nil)
+    }
 }
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weatherDataArray.count
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

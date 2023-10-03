@@ -38,7 +38,7 @@ struct List: Codable {
     let sys: Sys
     let dtTxt: String?
     let pop: Double
-    
+
     enum CodingKeys: String, CodingKey {
         case dt, main, weather, clouds, wind, visibility, pop, sys
         case dtTxt
@@ -78,6 +78,7 @@ struct Sys: Codable {
 struct Weather: Codable {
     let id: Int
     let main, description, icon: String
+
 }
 
 // MARK: - Wind
