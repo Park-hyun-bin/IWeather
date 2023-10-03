@@ -70,5 +70,6 @@ class WeatherTableViewCell: UITableViewCell {
                 }
         let celsiusTemperature = (weatherData.temperature) + 273.15
         temperatureLabel.text = "\(String(format: "%.1f", celsiusTemperature))°C"
+
     }
 }

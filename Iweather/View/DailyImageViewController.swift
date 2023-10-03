@@ -6,27 +6,27 @@ class DailyImageViewController: UIViewController {
     
     private let weatherProvider = MoyaProvider<WeatherAPI>()
 
-    func updateWeatherData(latitude: Double, longitude: Double) {
-        weatherProvider.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 1)) { [weak self] result in
-            switch result {
-            case .success(let response):
-                do {
-                    let weatherData = try JSONDecoder().decode(Welcome.self, from: response.data)
-                    if let firstDayWeather = weatherData.list.first {
-                        DispatchQueue.main.async {
-                            self?.highTemperatureLabel.text = "\(firstDayWeather.main.tempMax)°"
-                            self?.lowTemperatureLabel.text = "\(firstDayWeather.main.tempMin)°"
-                            self?.humidityLabel.text = "습도 : \(firstDayWeather.main.humidity)%"
-                        }
-                    }
-                } catch {
-                    print("Error decoding weather data: \(error)")
-                }
-            case .failure(let error):
-                print("Error fetching weather data: \(error)")
-            }
-        }
-    }
+//    func updateWeatherData(latitude: Double, longitude: Double) {
+//        weatherProvider.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 1)) { [weak self] result in
+//            switch result {
+//            case .success(let response):
+//                do {
+//                    let weatherData = try JSONDecoder().decode(Welcome.self, from: response.data)
+//                    if let firstDayWeather = weatherData.list.first {
+//                        DispatchQueue.main.async {
+//                            self?.highTemperatureLabel.text = "\(firstDayWeather.main.tempMax)°"
+//                            self?.lowTemperatureLabel.text = "\(firstDayWeather.main.tempMin)°"
+//                            self?.humidityLabel.text = "습도 : \(firstDayWeather.main.humidity)%"
+//                        }
+//                    }
+//                } catch {
+//                    print("Error decoding weather data: \(error)")
+//                }
+//            case .failure(let error):
+//                print("Error fetching weather data: \(error)")
+//            }
+//        }
+//    }
 
     private let currentLocation: UILabel = {
         let label = UILabel()

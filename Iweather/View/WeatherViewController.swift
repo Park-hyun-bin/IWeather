@@ -55,6 +55,7 @@ class WeatherViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(WeatherTableViewCell.self, forCellReuseIdentifier: WeatherTableViewCell.identifier)
+        
         return tableView
     }()
     private var weatherDataArray: [WeatherData] = []
@@ -70,6 +71,7 @@ class WeatherViewController: UIViewController {
     }
 
     private func configureUI() {
+        view.addSubview(TodayWeatherImageView)
         view.addSubview(cityNameLabel)
         view.addSubview(temperatureLabel)
         view.addSubview(humidityLabel)
@@ -77,7 +79,7 @@ class WeatherViewController: UIViewController {
         view.addSubview(weatherDescriptionLabel)
         view.addSubview(FCChangeButton)
         view.addSubview(tableView)
-        view.addSubview(TodayWeatherImageView)
+        tableView.backgroundColor = .clear
 
         FCChangeButton.snp.makeConstraints {
             $0.top.equalTo(cityNameLabel.snp.top)
@@ -184,6 +186,9 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weatherDataArray.count
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
