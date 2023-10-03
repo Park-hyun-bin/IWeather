@@ -81,6 +81,10 @@ class WeatherViewController: UIViewController {
         view.addSubview(tableView)
         tableView.backgroundColor = .clear
 
+        let tap = UITapGestureRecognizer(target: self, action: #selector(backgroundImageTap))
+        TodayWeatherImageView.isUserInteractionEnabled = true
+        TodayWeatherImageView.addGestureRecognizer(tap)
+
         FCChangeButton.snp.makeConstraints {
             $0.top.equalTo(cityNameLabel.snp.top)
             $0.trailing.equalToSuperview().inset(20)
@@ -180,6 +184,10 @@ class WeatherViewController: UIViewController {
         let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
+    }
+    @objc private func backgroundImageTap() {
+        let RecommandVC = RecomanndViewController()
+        self.present(RecommandVC, animated: true, completion: nil)
     }
 }
 
