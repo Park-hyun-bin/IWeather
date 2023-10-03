@@ -38,9 +38,8 @@ class RecomanndViewController: UIViewController {
     
     private var commentLabel: UILabel = {
         let commentLabel = UILabel()
-        commentLabel.text = "스파가기 좋은날"
         commentLabel.textColor = .white
-        commentLabel.font = UIFont(name: "GmarketSansBold", size: 30)
+        commentLabel.font = UIFont.boldSystemFont(ofSize: 30)
         return commentLabel
     }()
     
@@ -64,7 +63,7 @@ class RecomanndViewController: UIViewController {
     
     private var label: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "GmarketSansMedium", size: 24)
+        label.font = UIFont.boldSystemFont(ofSize: 24)
         label.text = "오늘 추천 메뉴"
         label.textColor = .white
         return label
@@ -72,12 +71,8 @@ class RecomanndViewController: UIViewController {
     
     private var menuLabel: UILabel = {
         let menuLabel = UILabel()
-        menuLabel.font = UIFont(name: "GmarketSansMedium", size: 18)
-        menuLabel.text = """
-                         찜질방에서 맥반석 계란과
-                         식혜 한잔 어떠신가요?
-                         """
-        menuLabel.numberOfLines = 3
+        menuLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        menuLabel.numberOfLines = 2
         menuLabel.textColor = .white
         return menuLabel
     }()
@@ -150,14 +145,17 @@ extension RecomanndViewController {
     }
     private func getWeatherData(exclude: String) {
            print("요청중")
-           weatherService.request(.getWeatherForCity("busan", days: 5)) { result in
+           weatherService.request(.getWeatherForCity("gangwon", days: 5)) { result in
                switch result {
                case let .success(response):
                    do {
                        let welcome = try response.map(Welcome.self)
                        DispatchQueue.main.async {
                            self.updateUI(with: welcome)
-                       }
+                           if let tempMax = welcome.list.first?.main.tempMax {
+                                                  self.updateRecoView(tempMax: tempMax)
+                           }
+                        }
                    } catch {
                        self.showError(message: "날씨 정보를 파싱하는 중 오류가 발생했습니다: \(error)")
                    }
@@ -167,33 +165,30 @@ extension RecomanndViewController {
                }
            }
        }
-    
+
     private func updateUI(with welcome: Welcome) {
-          print("UI 업데이트")
-        // 현재 시간을 가져옵니다.
+        print("UI 업데이트")
+        //현재 시간에 임으로 9시간 추가 (UTC+9로 나타내기 위함)
         let currentTime = Date() + 32_400
-        
-          let (sunriseStart, sunriseEnd, sunsetStart, sunsetEnd) = calculateSunriseAndSunsetTimes(weatherResponse: welcome)
-          // 현재 시간을 기반으로 어떤 이미지를 보여줄지 결정합니다.
-          determinePhotoToShow(currentTime: currentTime, sunriseStart: sunriseStart, sunriseEnd: sunriseEnd, sunsetStart: sunsetStart, sunsetEnd: sunsetEnd)
+        let (sunriseStart, sunriseEnd, sunsetStart, sunsetEnd) = calculateSunriseAndSunsetTimes(weatherResponse: welcome)
+        determinePhotoToShow(currentTime: currentTime, sunriseStart: sunriseStart, sunriseEnd: sunriseEnd, sunsetStart: sunsetStart, sunsetEnd: sunsetEnd)
         print(sunsetEnd)
         print(sunsetStart)
         print(sunriseEnd)
         print(sunriseStart)
         print(currentTime)
-      }
-
-    func calculateSunriseAndSunsetTimes(weatherResponse: Welcome) -> (Date, Date, Date, Date) {
-
-          let sunrise = Date(timeIntervalSince1970: TimeInterval(weatherResponse.city.sunrise) + 32_400)
-        let sunset = Date(timeIntervalSince1970: TimeInterval(weatherResponse.city.sunset) + 32_400)
-          let sunriseStart = sunrise.addingTimeInterval(-30 * 60)
-          let sunriseEnd = sunrise.addingTimeInterval(30 * 60)
-          let sunsetStart = sunset.addingTimeInterval(-30 * 60)
-          let sunsetEnd = sunset.addingTimeInterval(30 * 60)
-          return (sunriseStart, sunriseEnd, sunsetStart, sunsetEnd)
-      }
-
+    }
+        func calculateSunriseAndSunsetTimes(weatherResponse: Welcome) -> (Date, Date, Date, Date) {
+            
+            let sunrise = Date(timeIntervalSince1970: TimeInterval(weatherResponse.city.sunrise) + 32_400)
+            let sunset = Date(timeIntervalSince1970: TimeInterval(weatherResponse.city.sunset) + 32_400)
+            let sunriseStart = sunrise.addingTimeInterval(-30 * 60)
+            let sunriseEnd = sunrise.addingTimeInterval(30 * 60)
+            let sunsetStart = sunset.addingTimeInterval(-30 * 60)
+            let sunsetEnd = sunset.addingTimeInterval(30 * 60)
+            return (sunriseStart, sunriseEnd, sunsetStart, sunsetEnd)
+        }
+    
     func determinePhotoToShow(currentTime: Date, sunriseStart: Date, sunriseEnd: Date, sunsetStart: Date, sunsetEnd: Date) {
         // 일출 진행중 사진
         if currentTime >= sunriseStart && currentTime <= sunriseEnd {
@@ -209,6 +204,58 @@ extension RecomanndViewController {
         }
         // 낮 사진
         return backImage.image = UIImage(named: "day")
+    }
+    
+    func updateRecoView(tempMax: Double) {
+        var imageName = ""
+        var comment = ""
+        var menu1 = ""
+        var menu2 = ""
+        
+        switch tempMax {
+        case ..<3:
+            imageName = "verycold"
+            comment = "스키 타기"
+            menu1 = "스키 타고 출출할때"
+            menu2 = "따뜻한 컵라면"
+        case 3..<10:
+            imageName = "cold"
+            comment = "스파 가기"
+            menu1 = "찜질방에서 맥반석 달걀과"
+            menu2 = "식혜 한잔"
+        case 10..<15:
+            imageName = "chilly"
+            comment = "캠핑 가기"
+            menu1 = "숯불에 구운 삼겹살과"
+            menu2 = "맥주 한잔"
+        case 15..<20:
+            imageName = "cool"
+            comment = "소풍 가기"
+            menu1 = "돗자리 펴고 김밥과"
+            menu2 = "샌드위치"
+        case 20..<26:
+            imageName = "warm"
+            comment = "여행 가기"
+            menu1 = "바닷가에서 조개구이와"
+            menu2 = "소주 한잔"
+        case 26..<32:
+            imageName = "hot"
+            comment = "물놀이 가기"
+            menu1 = "계곡에서 백숙과"
+            menu2 = "시원한 수박"
+        default:
+            imageName = "veryhot"
+            comment = "집에 있기"
+            menu1 = "시원하게 에어컨 틀고"
+            menu2 = "냉면 한그릇"
+        }
+        
+        recoView.image = UIImage(named: imageName)
+        commentLabel.text = "\(comment) 좋은 날"
+        menuLabel.text = """
+                         \(menu1)
+                         \(menu2) 어떠신가요?
+                         """
     }
     
     private func showError(message: String) {
