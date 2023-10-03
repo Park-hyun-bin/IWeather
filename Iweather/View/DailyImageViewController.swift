@@ -4,6 +4,9 @@ import Moya
 
 class DailyImageViewController: UIViewController {
     
+    private var firstHighTemperatureLabel: UILabel?
+    private var firstLowTemperatureLabel: UILabel?
+    private var firstHumidityLabel: UILabel?
     private let weatherProvider = MoyaProvider<WeatherAPI>()
 
     func updateWeatherData(latitude: Double, longitude: Double) {
@@ -14,9 +17,9 @@ class DailyImageViewController: UIViewController {
                     let weatherData = try JSONDecoder().decode(Welcome.self, from: response.data)
                     if let firstDayWeather = weatherData.list.first {
                         DispatchQueue.main.async {
-                            self?.highTemperatureLabel.text = "\(firstDayWeather.main.tempMax)°"
-                            self?.lowTemperatureLabel.text = "\(firstDayWeather.main.tempMin)°"
-                            self?.humidityLabel.text = "습도 : \(firstDayWeather.main.humidity)%"
+                            self?.firstHighTemperatureLabel?.text = "\(firstDayWeather.main.tempMax)°"
+                            self?.firstLowTemperatureLabel?.text = "\(firstDayWeather.main.tempMin)°"
+                            self?.firstHumidityLabel?.text = "습도 : \(firstDayWeather.main.humidity)%"
                         }
                     }
                 } catch {
@@ -81,6 +84,8 @@ class DailyImageViewController: UIViewController {
             let dayView = UIView()
             dayView.translatesAutoresizingMaskIntoConstraints = false
             
+            
+            
             let weatherImageView = UIImageView()
             weatherImageView.translatesAutoresizingMaskIntoConstraints = false
             weatherImageView.image = UIImage(named: "raining")
@@ -103,7 +108,11 @@ class DailyImageViewController: UIViewController {
             humidityLabel.textColor = .black
             humidityLabel.textAlignment = .center
             
-
+            if i == 0 {
+                    self.firstHighTemperatureLabel = highTemperatureLabel
+                    self.firstLowTemperatureLabel = lowTemperatureLabel
+                    self.firstHumidityLabel = humidityLabel
+                }
             
             let date = calendar.date(byAdding: .day, value: i, to: currentDate)!
             let dateString = dateFormatter.string(from: date)
