@@ -167,11 +167,12 @@ extension RecomanndViewController {
                }
            }
        }
+    
     private func updateUI(with welcome: Welcome) {
           print("UI 업데이트")
         // 현재 시간을 가져옵니다.
-          let currentTime = Date()
-          // 날출데이터에서 일출 및 일몰 시간을 계산합니다.
+        let currentTime = Date() + 32_400
+        
           let (sunriseStart, sunriseEnd, sunsetStart, sunsetEnd) = calculateSunriseAndSunsetTimes(weatherResponse: welcome)
           // 현재 시간을 기반으로 어떤 이미지를 보여줄지 결정합니다.
           determinePhotoToShow(currentTime: currentTime, sunriseStart: sunriseStart, sunriseEnd: sunriseEnd, sunsetStart: sunsetStart, sunsetEnd: sunsetEnd)
@@ -179,17 +180,20 @@ extension RecomanndViewController {
         print(sunsetStart)
         print(sunriseEnd)
         print(sunriseStart)
+        print(currentTime)
       }
+
     func calculateSunriseAndSunsetTimes(weatherResponse: Welcome) -> (Date, Date, Date, Date) {
-          let sunrise = Date(timeIntervalSince1970: TimeInterval(weatherResponse.city.sunrise))
-          let sunset = Date(timeIntervalSince1970: TimeInterval(weatherResponse.city.sunset))
+
+          let sunrise = Date(timeIntervalSince1970: TimeInterval(weatherResponse.city.sunrise) + 32_400)
+        let sunset = Date(timeIntervalSince1970: TimeInterval(weatherResponse.city.sunset) + 32_400)
           let sunriseStart = sunrise.addingTimeInterval(-30 * 60)
           let sunriseEnd = sunrise.addingTimeInterval(30 * 60)
           let sunsetStart = sunset.addingTimeInterval(-30 * 60)
           let sunsetEnd = sunset.addingTimeInterval(30 * 60)
           return (sunriseStart, sunriseEnd, sunsetStart, sunsetEnd)
       }
-    
+
     func determinePhotoToShow(currentTime: Date, sunriseStart: Date, sunriseEnd: Date, sunsetStart: Date, sunsetEnd: Date) {
         // 일출 진행중 사진
         if currentTime >= sunriseStart && currentTime <= sunriseEnd {
