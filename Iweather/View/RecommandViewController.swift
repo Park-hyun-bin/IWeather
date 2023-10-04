@@ -81,10 +81,7 @@ class RecomanndViewController: UIViewController {
    
         initConstraints()
         buttonSetup()
-        
-        let exclude = "hourly,daily"
-        getWeatherData(exclude: exclude)
-        
+        fetchWeatherData()
     }
 }
 
@@ -143,22 +140,14 @@ extension RecomanndViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    private func getWeatherData(exclude: String) {
-           print("요청중")
-           weatherService.request(.getWeatherForCity("", days: 5)) { result in
+    func fetchWeatherData() {
+           let exclude = "hourly,daily"
+           BackgroundUtility.getWeatherData(exclude: exclude) { result in
                switch result {
-               case let .success(response):
-                   do {
-                       let welcome = try response.map(Welcome.self)
-                       DispatchQueue.main.async {
-                           BackgroundUtility.updateUI(with: welcome)
-                           self.background(with: welcome)
-                           if let tempMax = welcome.list.first?.main.tempMax {
-                                                  self.updateRecoView(tempMax: tempMax)
-                           }
-                        }
-                   } catch {
-                       self.showError(message: "날씨 정보를 파싱하는 중 오류가 발생했습니다: \(error)")
+               case let .success(welcome):
+                   self.background(with: welcome)
+                   if let tempMax = welcome.list.first?.main.tempMax {
+                       self.updateRecoView(tempMax: tempMax)
                    }
                case let .failure(error):
                    self.showError(message: "날씨 정보를 가져오는 중 오류가 발생했습니다: \(error.localizedDescription)")
@@ -166,6 +155,7 @@ extension RecomanndViewController {
                }
            }
        }
+    
     private func background(with welcome: Welcome) {
 
         let (currentTime, sunriseStart, sunriseEnd, sunsetStart, sunsetEnd) = BackgroundUtility.calculateSunriseAndSunsetTimes(weatherResponse: welcome)
