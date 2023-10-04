@@ -12,40 +12,38 @@ class MapViewController: UIViewController {
 
     var mapView: MKMapView!
     var textField: UITextField!
-    var containerView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupContainerView()
+        setupBackgroundImage()
         setupMapView()
         setupTextField()
     }
 
-    func setupContainerView() {
-        // Create a container view
-        containerView = UIView(frame: CGRect(x: 20, y: 120, width: view.frame.width - 40, height: 400))
-        containerView.backgroundColor = .clear
-        view.addSubview(containerView)
+    func setupBackgroundImage() {
+        // Set the background image
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "background5") // Replace with your image name
+        backgroundImage.contentMode = UIView.ContentMode.scaleAspectFill
+        self.view.insertSubview(backgroundImage, at: 0)
     }
 
     func setupMapView() {
-        mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: containerView.frame.width, height: 300))
+        mapView = MKMapView(frame: CGRect(x: 20, y: 70, width: view.frame.width - 40, height: 300))
         mapView.mapType = .standard
         mapView.showsUserLocation = true
         mapView.layer.cornerRadius = 10.0
         mapView.layer.masksToBounds = true
-
-        containerView.addSubview(mapView)
+        view.addSubview(mapView)
     }
 
-
     func setupTextField() {
-        textField = UITextField(frame: CGRect(x: 0, y: 320, width: containerView.frame.width, height: 40))
+        textField = UITextField(frame: CGRect(x: 20, y: 380, width: view.frame.width - 40, height: 40))
         textField.backgroundColor = .white
         textField.placeholder = "주소를 입력하세요."
         textField.delegate = self
         textField.layer.cornerRadius = 10.0
-        containerView.addSubview(textField)
+        view.addSubview(textField)
     }
 }
 
