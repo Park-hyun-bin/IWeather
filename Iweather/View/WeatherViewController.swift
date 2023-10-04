@@ -180,9 +180,21 @@ class WeatherViewController: UIViewController {
     @objc private func FCChange() {
         isCelsius.toggle()
         FCChangeButton.setTitle(isCelsius ? "C" : "F", for: .normal)
-    }
 
-    private func showError(message: String) {
+        if let welcome = weatherDataArray.first {
+               var temperature: Double
+
+               if isCelsius {
+                   temperature = welcome.temperature 
+               } else {
+                   temperature = (welcome.temperature * 9/5) + 32
+               }
+
+               temperatureLabel.text = "날씨: \(String(format: "%.1f", temperature))°\(isCelsius ? "C" : "F")"
+           }
+       }
+
+    private func showError(message: String) { 
         let alertController = UIAlertController(title: "오류", message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
         alertController.addAction(okAction)
@@ -198,7 +210,7 @@ class WeatherViewController: UIViewController {
         let sunsetTime = WeatherUtility.getSunsetTime()
 
         if currentTime >= sunriseTime && currentTime <= sunsetTime {
-            TodayWeatherImageView.image = UIImage(named: "evening")
+            TodayWeatherImageView.image = UIImage(named: "clearSky")
               } else {
                   TodayWeatherImageView.image = UIImage(named: "evening")
               }
