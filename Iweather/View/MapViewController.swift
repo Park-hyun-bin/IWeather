@@ -26,7 +26,7 @@ class MapViewController: UIViewController {
     func setupBackgroundImage() {
         // Set the background image
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: "your_image_name") // Replace with your image name
+        backgroundImage.image = UIImage(named: "background5") // Replace with your image name
         backgroundImage.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.insertSubview(backgroundImage, at: 0)
     }
