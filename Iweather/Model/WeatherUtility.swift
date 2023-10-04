@@ -14,6 +14,7 @@ struct WeatherUtility {
         let currentTimeString = dateFormatter.string(from: currentDate)
         return currentTimeString
     }
+    
     static func getSunsetTime() -> String {
         return "18:00"
     }
