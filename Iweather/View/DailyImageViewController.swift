@@ -32,10 +32,10 @@ class DailyImageViewController: UIViewController {
         view.addSubview(currentLocation)
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationUpdate(_:)), name: .didUpdateLocation, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleWeatherLocationUpdate(_:)), name: .didUpdateLocationForWeather, object: nil)
-        if let lastLocation = getLastSearchedLocation() {
-                currentLocation.text = "[\(lastLocation.address)]"
-                updateWeatherData(latitude: lastLocation.latitude, longitude: lastLocation.longitude)
-            }
+        if let lastLocation = UserDefaultsManager.shared.getLastSearchedLocation() {
+            currentLocation.text = "[\(lastLocation.address)]"
+            updateWeatherData(latitude: lastLocation.latitude, longitude: lastLocation.longitude)
+        }
         setupDayViews()
         setupLayout()
         
@@ -74,11 +74,13 @@ class DailyImageViewController: UIViewController {
 
 
     
+
+    
     @objc func handleWeatherLocationUpdate(_ notification: Notification) {
         if let latitude = notification.userInfo?["latitude"] as? Double,
            let longitude = notification.userInfo?["longitude"] as? Double {
             
-            saveLastSearchedLocation(latitude: latitude, longitude: longitude, address: currentLocation.text ?? "")
+            UserDefaultsManager.shared.saveLastSearchedLocation(latitude: latitude, longitude: longitude, address: currentLocation.text ?? "")
             updateWeatherData(latitude: latitude, longitude: longitude)
         }
     }
@@ -86,10 +88,9 @@ class DailyImageViewController: UIViewController {
     @objc func handleLocationUpdate(_ notification: Notification) {
         if let address = notification.userInfo?["address"] as? String {
             currentLocation.text = "[\(address)]"
-            saveLastSearchedLocation(latitude: getLastSearchedLocation()?.latitude ?? 0.0, longitude: getLastSearchedLocation()?.longitude ?? 0.0, address: address)
+            UserDefaultsManager.shared.saveLastSearchedLocation(latitude: UserDefaultsManager.shared.getLastSearchedLocation()?.latitude ?? 0.0, longitude: UserDefaultsManager.shared.getLastSearchedLocation()?.longitude ?? 0.0, address: address)
         }
     }
-
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: .didUpdateLocation, object: nil)
