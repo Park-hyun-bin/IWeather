@@ -21,6 +21,28 @@ struct WeatherUtility {
     static func getSunriseTime() -> String {
         return "06:00"
     }
+
+    static func getWeatherCode(_ weatherID: Int) -> String {
+        switch weatherID {
+        case 200...232:
+            return "thunderstorm"
+        case 300...321:
+            return "drizzle"
+        case 500...531:
+            return "rain"
+        case 600...622:
+            return "snow"
+        case 701, 721, 741: 
+            return "mist"
+        case 800:
+            return "clearSky"
+        case 801...804:
+            return "mist"
+        default:
+            return "defaultWeatherImage"
+
+        }
+    }
 }
 
 
