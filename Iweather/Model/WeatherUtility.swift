@@ -36,7 +36,7 @@ struct WeatherUtility {
             return "mist"
         case 800:
             return "clearSky"
-        case 801...804:
+        case 801...804: //
             return "mist"
         default:
             return "defaultWeatherImage"

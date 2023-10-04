@@ -22,7 +22,7 @@ class WeatherViewController: UIViewController {
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 30)
+        label.font = UIFont.systemFont(ofSize: 33)
         return label
     }()
     
@@ -164,7 +164,7 @@ class WeatherViewController: UIViewController {
     private func updateUI(with welcome: Welcome) {
         cityNameLabel.text = welcome.city.name
         let temperature = isCelsius ? welcome.list[0].main.temp : welcome.list[0].main.temp - 273.15
-        temperatureLabel.text = "날씨: \(String(format: "%.1f", temperature))°C"
+        temperatureLabel.text = "\(String(format: "%.1f", temperature))°C"
         humidityLabel.text = "습도: \(welcome.list[0].main.humidity)%"
         windSpeedLabel.text = "풍속: \(welcome.list[0].wind.speed) m/s"
         
