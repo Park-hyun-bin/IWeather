@@ -14,7 +14,6 @@ class MapViewController: UIViewController {
     var textField: UITextField!
     var tableView: UITableView!
     var searchResults: [String] = []  // Data source for the table view
-    var isFavoriteToggled: [Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,4 +128,24 @@ extension UIViewController {
 
 extension Notification.Name {
     static let didUpdateLocation = Notification.Name("didUpdateLocation")
+}
+
+extension MapViewController {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
+            self?.deleteSearchResult(at: indexPath)
+            completionHandler(true)
+        }
+
+        let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfig
+    }
+
+    private func deleteSearchResult(at indexPath: IndexPath) {
+        // Remove the item from the data source
+        searchResults.remove(at: indexPath.row)
+
+        // Update the table view
+        tableView.deleteRows(at: [indexPath], with: .fade)
+    }
 }
