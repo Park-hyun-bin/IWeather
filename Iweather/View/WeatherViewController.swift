@@ -185,9 +185,9 @@ class WeatherViewController: UIViewController {
                var temperature: Double
 
                if isCelsius {
-                   temperature = welcome.temperature 
+                   temperature = welcome.temperature + 273.15
                } else {
-                   temperature = (welcome.temperature * 9/5) + 32
+                   temperature = welcome.temperature
                }
 
                temperatureLabel.text = "날씨: \(String(format: "%.1f", temperature))°\(isCelsius ? "C" : "F")"

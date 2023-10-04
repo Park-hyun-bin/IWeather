@@ -12,7 +12,7 @@ class WeatherTableViewCell: UITableViewCell {
     
     private let weatherImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -31,12 +31,13 @@ class WeatherTableViewCell: UITableViewCell {
         dateLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
             $0.centerY.equalToSuperview()
+            
         }
         
         weatherImageView.snp.makeConstraints {
             $0.leading.equalTo(dateLabel.snp.trailing).offset(10)
             $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(30)
+            $0.width.height.equalTo(50)
         }
         
         temperatureLabel.snp.makeConstraints {
