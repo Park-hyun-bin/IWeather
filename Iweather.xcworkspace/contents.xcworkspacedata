@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/ganghoseong/Desktop/Iweather/Iweather/Model/WeatherUtility.swift">
+   </FileRef>
+   <FileRef
       location = "group:Iweather.xcodeproj">
    </FileRef>
    <FileRef

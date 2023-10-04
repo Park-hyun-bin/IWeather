@@ -6,7 +6,7 @@ class WeatherTableViewCell: UITableViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 22)
         return label
     }()
     
@@ -18,7 +18,7 @@ class WeatherTableViewCell: UITableViewCell {
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 22)
         return label
     }()
     
@@ -68,6 +68,7 @@ class WeatherTableViewCell: UITableViewCell {
                         }
                     }
                 }
+
         let celsiusTemperature = (weatherData.temperature) + 273.15
         temperatureLabel.text = "\(String(format: "%.1f", celsiusTemperature))°C"
 
