@@ -5,11 +5,41 @@ import Moya
 class DailyImageViewController: UIViewController {
     
     private let weatherProvider = MoyaProvider<WeatherAPI>()
-
+    
+    private var dayViews: [UIView] = []
     private var highTemperatureLabels: [UILabel] = []
     private var lowTemperatureLabels: [UILabel] = []
     private var humidityLabels: [UILabel] = []
+    private var weatherImageViews: [UIImageView] = []
 
+    private let currentLocation: UILabel = {
+        let label = UILabel()
+        label.text = "[서울]"
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let backgroundImage = UIImageView(frame: view.bounds)
+        backgroundImage.image = UIImage(named: "background5")
+        backgroundImage.contentMode = .scaleAspectFill
+        view.addSubview(backgroundImage)
+        view.sendSubviewToBack(backgroundImage)
+        view.addSubview(currentLocation)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLocationUpdate(_:)), name: .didUpdateLocation, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWeatherLocationUpdate(_:)), name: .didUpdateLocationForWeather, object: nil)
+        if let lastLocation = UserDefaultsManager.shared.getLastSearchedLocation() {
+            currentLocation.text = "[\(lastLocation.address)]"
+            updateWeatherData(latitude: lastLocation.latitude, longitude: lastLocation.longitude)
+        }
+        setupDayViews()
+        setupLayout()
+        
+    }
     
     
     func updateWeatherData(latitude: Double, longitude: Double) {
@@ -24,6 +54,12 @@ class DailyImageViewController: UIViewController {
                             self?.highTemperatureLabels[index].text = "\(dayWeather.main.tempMax)°"
                             self?.lowTemperatureLabels[index].text = "\(dayWeather.main.tempMin)°"
                             self?.humidityLabels[index].text = "습도 : \(dayWeather.main.humidity)%"
+                            
+                            if let weather = dayWeather.weather.first {
+                                let imageName = self?.imageNameForWeather(weather)
+                                self?.weatherImageViews[index].image = UIImage(named: imageName ?? "defaultImage")
+                                self?.dayViews[index].subviews.compactMap { $0 as? UIImageView }.first?.image = UIImage(named: imageName ?? "defaultImage")
+                            }
                         }
                     }
                     
@@ -36,52 +72,52 @@ class DailyImageViewController: UIViewController {
         }
     }
 
-    private let currentLocation: UILabel = {
-        let label = UILabel()
-        label.text = "[서울]"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private var dayViews: [UIView] = []
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let backgroundImage = UIImageView(frame: view.bounds)
-        backgroundImage.image = UIImage(named: "background5")
-        backgroundImage.contentMode = .scaleAspectFill
-        view.addSubview(backgroundImage)
-        view.sendSubviewToBack(backgroundImage)
-        view.addSubview(currentLocation)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLocationUpdate(_:)), name: .didUpdateLocation, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleWeatherLocationUpdate(_:)), name: .didUpdateLocationForWeather, object: nil)
 
-        setupDayViews()
-        setupLayout()
-        
-    }
+    
+
     
     @objc func handleWeatherLocationUpdate(_ notification: Notification) {
         if let latitude = notification.userInfo?["latitude"] as? Double,
            let longitude = notification.userInfo?["longitude"] as? Double {
+            
+            UserDefaultsManager.shared.saveLastSearchedLocation(latitude: latitude, longitude: longitude, address: currentLocation.text ?? "")
             updateWeatherData(latitude: latitude, longitude: longitude)
         }
     }
-    @objc func handleLocationUpdate(_ notification: Notification) {
-            if let address = notification.userInfo?["address"] as? String {
-                currentLocation.text = "[\(address)]"
-            }
-        }
 
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .didUpdateLocation, object: nil)
+    @objc func handleLocationUpdate(_ notification: Notification) {
+        if let address = notification.userInfo?["address"] as? String {
+            currentLocation.text = "[\(address)]"
+            UserDefaultsManager.shared.saveLastSearchedLocation(latitude: UserDefaultsManager.shared.getLastSearchedLocation()?.latitude ?? 0.0, longitude: UserDefaultsManager.shared.getLastSearchedLocation()?.longitude ?? 0.0, address: address)
+        }
     }
 
-    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .didUpdateLocation, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .didUpdateLocationForWeather, object: nil)
+    }
+
+
+    func imageNameForWeather(_ weather: Weather) -> String {
+        switch weather.main.lowercased() {
+        case "clear":
+            return "clear"
+        case "clouds":
+            return "clouds"
+        case "rain":
+            return "raining"
+        case "mist":
+            return "mist"
+        case "snow":
+            return "snow"
+        case "thunderstorm":
+            return "thunderstorm"
+        case "tornado":
+            return "tornado"
+        default:
+            return "defaultImage"
+        }
+    }
     
     
     private func setupDayViews() {
@@ -90,6 +126,7 @@ class DailyImageViewController: UIViewController {
         
         let dayOfWeekFormatter = DateFormatter()
         dayOfWeekFormatter.dateFormat = "E"
+        dayOfWeekFormatter.locale = Locale(identifier: "ko_KR")
         
         let currentDate = Date()
         let calendar = Calendar.current
@@ -99,6 +136,8 @@ class DailyImageViewController: UIViewController {
             dayView.translatesAutoresizingMaskIntoConstraints = false
             
             let weatherImageView = UIImageView()
+            weatherImageViews.append(weatherImageView)
+
             weatherImageView.translatesAutoresizingMaskIntoConstraints = false
             weatherImageView.image = UIImage(named: "raining")
             weatherImageView.contentMode = .scaleAspectFit
@@ -170,6 +209,8 @@ class DailyImageViewController: UIViewController {
         }
     }
     
+
+
     private func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
         
