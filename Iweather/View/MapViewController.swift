@@ -12,18 +12,22 @@ class MapViewController: UIViewController {
 
     var mapView: MKMapView!
     var textField: UITextField!
+    var tableView: UITableView!
+    var searchResults: [String] = []  // Data source for the table view
+    var isFavoriteToggled: [Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackgroundImage()
         setupMapView()
         setupTextField()
+        setupTableView()
     }
 
     func setupBackgroundImage() {
         // Set the background image
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: "background5") // Replace with your image name
+        backgroundImage.image = UIImage(named: "your_image_name") // Replace with your image name
         backgroundImage.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.insertSubview(backgroundImage, at: 0)
     }
@@ -45,15 +49,43 @@ class MapViewController: UIViewController {
         textField.layer.cornerRadius = 10.0
         view.addSubview(textField)
     }
+
+    func setupTableView() {
+        tableView = UITableView(frame: CGRect(x: 20, y: 430, width: view.frame.width - 40, height: view.frame.height - 430))
+        tableView.backgroundColor = .clear
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.addSubview(tableView)
+    }
 }
+
+
+extension MapViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchResults.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = searchResults[indexPath.row]
+        return cell
+    }
+}
+
 
 
 
 extension MapViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if let address = textField.text, !address.isEmpty {
-            AddressDecoder.getGeocodeAddress(query: address) { [weak self] result in
+        if let text = textField.text, !text.isEmpty {
+            // Add the address to search results
+            searchResults.append(text)
+            tableView.reloadData()
+            
+            // Search for the address and update the map
+            AddressDecoder.getGeocodeAddress(query: text) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let geocode):
@@ -66,8 +98,6 @@ extension MapViewController: UITextFieldDelegate {
                             let userInfo: [String: Any] = ["address": firstAddress.jibunAddress, "latitude": latitude, "longitude": longitude]
                             NotificationCenter.default.post(name: .didUpdateLocationForWeather, object: nil, userInfo: userInfo)
                             NotificationCenter.default.post(name: .didUpdateLocation, object: nil, userInfo: ["address": firstAddress.jibunAddress])
-
-
                         } else {
                             self.showAlert(title: "오류", message: "Invalid coordinates")
                         }
@@ -76,7 +106,7 @@ extension MapViewController: UITextFieldDelegate {
                     }
                 case .failure(let error):
                     DispatchQueue.main.async {
-                        self.showAlert(title: "오", message: "Geocode error: \(error.localizedDescription)")
+                        self.showAlert(title: "오류", message: "Geocode error: \(error.localizedDescription)")
                     }
                 }
             }
@@ -84,6 +114,7 @@ extension MapViewController: UITextFieldDelegate {
         return true
     }
 }
+
 
 
 extension UIViewController {
