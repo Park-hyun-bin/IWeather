@@ -12,50 +12,80 @@ class MapViewController: UIViewController {
 
     var mapView: MKMapView!
     var textField: UITextField!
-    var containerView: UIView!
+    var tableView: UITableView!
+    var searchResults: [String] = []  // Data source for the table view
+    var isFavoriteToggled: [Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupContainerView()
+        setupBackgroundImage()
         setupMapView()
         setupTextField()
+        setupTableView()
     }
 
-    func setupContainerView() {
-        // Create a container view
-        containerView = UIView(frame: CGRect(x: 20, y: 120, width: view.frame.width - 40, height: 400))
-        containerView.backgroundColor = .clear
-        view.addSubview(containerView)
+    func setupBackgroundImage() {
+        // Set the background image
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "your_image_name") // Replace with your image name
+        backgroundImage.contentMode = UIView.ContentMode.scaleAspectFill
+        self.view.insertSubview(backgroundImage, at: 0)
     }
 
     func setupMapView() {
-        mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: containerView.frame.width, height: 300))
+        mapView = MKMapView(frame: CGRect(x: 20, y: 70, width: view.frame.width - 40, height: 300))
         mapView.mapType = .standard
         mapView.showsUserLocation = true
         mapView.layer.cornerRadius = 10.0
         mapView.layer.masksToBounds = true
-
-        containerView.addSubview(mapView)
+        view.addSubview(mapView)
     }
 
-
     func setupTextField() {
-        textField = UITextField(frame: CGRect(x: 0, y: 320, width: containerView.frame.width, height: 40))
+        textField = UITextField(frame: CGRect(x: 20, y: 380, width: view.frame.width - 40, height: 40))
         textField.backgroundColor = .white
         textField.placeholder = "주소를 입력하세요."
         textField.delegate = self
         textField.layer.cornerRadius = 10.0
-        containerView.addSubview(textField)
+        view.addSubview(textField)
+    }
+
+    func setupTableView() {
+        tableView = UITableView(frame: CGRect(x: 20, y: 430, width: view.frame.width - 40, height: view.frame.height - 430))
+        tableView.backgroundColor = .clear
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.addSubview(tableView)
     }
 }
+
+
+extension MapViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchResults.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = searchResults[indexPath.row]
+        return cell
+    }
+}
+
 
 
 
 extension MapViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if let address = textField.text, !address.isEmpty {
-            AddressDecoder.getGeocodeAddress(query: address) { [weak self] result in
+        if let text = textField.text, !text.isEmpty {
+            // Add the address to search results
+            searchResults.append(text)
+            tableView.reloadData()
+            
+            // Search for the address and update the map
+            AddressDecoder.getGeocodeAddress(query: text) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let geocode):
@@ -68,8 +98,6 @@ extension MapViewController: UITextFieldDelegate {
                             let userInfo: [String: Any] = ["address": firstAddress.jibunAddress, "latitude": latitude, "longitude": longitude]
                             NotificationCenter.default.post(name: .didUpdateLocationForWeather, object: nil, userInfo: userInfo)
                             NotificationCenter.default.post(name: .didUpdateLocation, object: nil, userInfo: ["address": firstAddress.jibunAddress])
-
-
                         } else {
                             self.showAlert(title: "오류", message: "Invalid coordinates")
                         }
@@ -78,7 +106,7 @@ extension MapViewController: UITextFieldDelegate {
                     }
                 case .failure(let error):
                     DispatchQueue.main.async {
-                        self.showAlert(title: "오", message: "Geocode error: \(error.localizedDescription)")
+                        self.showAlert(title: "오류", message: "Geocode error: \(error.localizedDescription)")
                     }
                 }
             }
@@ -86,6 +114,7 @@ extension MapViewController: UITextFieldDelegate {
         return true
     }
 }
+
 
 
 extension UIViewController {
