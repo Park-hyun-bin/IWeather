@@ -21,15 +21,12 @@ class DailyImageViewController: UIViewController {
         return label
     }()
     
+    // 일몰, 일출시간 맞춰 백그라운드 이미지 변경, 최저최고기온 레이블글자 추가
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let backgroundImage = UIImageView(frame: view.bounds)
-        backgroundImage.image = UIImage(named: "evening")
-        backgroundImage.alpha = 0.7
-        backgroundImage.contentMode = .scaleAspectFill
-        view.addSubview(backgroundImage)
-        view.sendSubviewToBack(backgroundImage)
+        updateBackgroundImage()
+
         view.addSubview(currentLocation)
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationUpdate(_:)), name: .didUpdateLocation, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleWeatherLocationUpdate(_:)), name: .didUpdateLocationForWeather, object: nil)
@@ -56,8 +53,9 @@ class DailyImageViewController: UIViewController {
                     for (index, dayWeather) in weatherData.list.prefix(4).enumerated() {
                         DispatchQueue.main.async {
                             
-                            self?.highTemperatureLabels[index].text = "\(dayWeather.main.tempMax)°C"
-                            self?.lowTemperatureLabels[index].text = "\(dayWeather.main.tempMin)°C"
+                            self?.highTemperatureLabels[index].text = "최고\n\(dayWeather.main.tempMax)°C"
+                            self?.lowTemperatureLabels[index].text = "최저\n\(dayWeather.main.tempMin)°C"
+
                             self?.humidityLabels[index].text = "습도 : \(dayWeather.main.humidity)%"
                             
                             if let weather = dayWeather.weather.first {
@@ -77,6 +75,28 @@ class DailyImageViewController: UIViewController {
         }
     }
 
+
+    @objc private func updateBackgroundImage() {
+        let currentTime = WeatherUtility.getCurrentTime()
+        let sunriseTime = WeatherUtility.getSunriseTime()
+        let sunsetTime = WeatherUtility.getSunsetTime()
+        
+        if currentTime >= sunriseTime && currentTime <= sunsetTime {
+            let backgroundImage = UIImageView(frame: view.bounds)
+            backgroundImage.image = UIImage(named: "clearSky")
+            backgroundImage.alpha = 0.7
+            backgroundImage.contentMode = .scaleAspectFill
+            view.addSubview(backgroundImage)
+            view.sendSubviewToBack(backgroundImage)
+        } else {
+            let backgroundImage = UIImageView(frame: view.bounds)
+            backgroundImage.image = UIImage(named: "evening")
+            backgroundImage.alpha = 0.7
+            backgroundImage.contentMode = .scaleAspectFill
+            view.addSubview(backgroundImage)
+            view.sendSubviewToBack(backgroundImage)
+        }
+    }
 
     
     private func animateDayViews() {
@@ -115,7 +135,7 @@ class DailyImageViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: .didUpdateLocationForWeather, object: nil)
     }
 
-
+ //최신데브
     func imageNameForWeather(_ weather: Weather) -> String {
         switch weather.main.lowercased() {
         case "clear":
@@ -197,14 +217,17 @@ class DailyImageViewController: UIViewController {
             let highTemperatureLabel = UILabel()
             highTemperatureLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
             highTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
-            highTemperatureLabel.text = "30°C" // 예시로 30도로 설정, 실제로는 API 데이터 사용
+            highTemperatureLabel.text = "최고 \n30°C" // 예시로 30도로 설정, 실제로는 API 데이터 사용
+            highTemperatureLabel.numberOfLines = 0
+
             highTemperatureLabel.textAlignment = .center
             
             
             let lowTemperatureLabel = UILabel()
             lowTemperatureLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
             lowTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
-            lowTemperatureLabel.text = "20°C" // 예시로 20도로 설정, 실제로는 API 데이터 사용
+            lowTemperatureLabel.text = "최저 \n20°C" // 예시로 20도로 설정, 실제로는 API 데이터 사용
+            lowTemperatureLabel.numberOfLines = 0
             lowTemperatureLabel.textAlignment = .center
             
             let humidityLabel = UILabel()
@@ -241,7 +264,7 @@ class DailyImageViewController: UIViewController {
                 weatherImageView.widthAnchor.constraint(equalToConstant: 30),
                 weatherImageView.heightAnchor.constraint(equalToConstant: 30),
                 highTemperatureLabel.centerXAnchor.constraint(equalTo: dayView.centerXAnchor),
-                highTemperatureLabel.topAnchor.constraint(equalTo: weatherImageView.bottomAnchor, constant: 140),
+                highTemperatureLabel.topAnchor.constraint(equalTo: weatherImageView.bottomAnchor, constant: 120),
                 lowTemperatureLabel.centerXAnchor.constraint(equalTo: dayView.centerXAnchor),
                 lowTemperatureLabel.topAnchor.constraint(equalTo: highTemperatureLabel.bottomAnchor, constant: 30),
                 humidityLabel.centerXAnchor.constraint(equalTo: dayView.centerXAnchor),
