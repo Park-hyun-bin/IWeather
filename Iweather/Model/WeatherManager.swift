@@ -54,12 +54,12 @@ struct Main: Codable {
 
     enum CodingKeys: String, CodingKey {
         case temp
-        case feelsLike = "feels_like" // "feels_like"에 대한 코딩 키 지정
-        case tempMin = "temp_min" // "temp_min"에 대한 코딩 키 지정
-        case tempMax = "temp_max" // "temp_max"에 대한 코딩 키 지정
+        case feelsLike = "feels_like"
+        case tempMin = "temp_min"
+        case tempMax = "temp_max"
         case pressure
-        case seaLevel = "sea_level" // "sea_level"에 대한 코딩 키 지정
-        case grndLevel = "grnd_level" // "grnd_level"에 대한 코딩 키 지정
+        case seaLevel = "sea_level"
+        case grndLevel = "grnd_level" 
         case humidity
         case tempKf
     }
