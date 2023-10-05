@@ -7,13 +7,17 @@
 
 import UIKit
 import MapKit
+import SnapKit
+import Moya
 
 class MapViewController: UIViewController {
+
+    private let weatherService = MoyaProvider<WeatherAPI>(plugins: [NetworkLoggerPlugin()])
 
     var mapView: MKMapView!
     var textField: UITextField!
     var tableView: UITableView!
-    var searchResults: [String] = []  // Data source for the table view
+    var searchResults = [Welcome]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,41 +28,63 @@ class MapViewController: UIViewController {
     }
 
     func setupBackgroundImage() {
-        // Set the background image
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: "background5") // Replace with your image name
-        backgroundImage.contentMode = UIView.ContentMode.scaleAspectFill
+        backgroundImage.image = UIImage(named: "background5")
+        backgroundImage.contentMode = .scaleAspectFill
         self.view.insertSubview(backgroundImage, at: 0)
+        backgroundImage.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     func setupMapView() {
-        mapView = MKMapView(frame: CGRect(x: 20, y: 70, width: view.frame.width - 40, height: 300))
+        mapView = MKMapView()
         mapView.mapType = .standard
         mapView.showsUserLocation = true
         mapView.layer.cornerRadius = 10.0
         mapView.layer.masksToBounds = true
         view.addSubview(mapView)
+
+        mapView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(70)
+            $0.left.equalToSuperview().offset(20)
+            $0.right.equalToSuperview().offset(-20)
+            $0.height.equalTo(300)
+        }
     }
 
     func setupTextField() {
-        textField = UITextField(frame: CGRect(x: 20, y: 380, width: view.frame.width - 40, height: 40))
+        textField = UITextField()
         textField.backgroundColor = .white
         textField.placeholder = "주소를 입력하세요."
         textField.delegate = self
         textField.layer.cornerRadius = 10.0
         view.addSubview(textField)
+
+        textField.snp.makeConstraints {
+            $0.top.equalTo(mapView.snp.bottom).offset(10)
+            $0.left.equalToSuperview().offset(20)
+            $0.right.equalToSuperview().offset(-20)
+            $0.height.equalTo(40)
+        }
     }
 
     func setupTableView() {
-        tableView = UITableView(frame: CGRect(x: 20, y: 430, width: view.frame.width - 40, height: view.frame.height - 430))
+        tableView = UITableView()
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
+
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(textField.snp.bottom).offset(10)
+            $0.left.equalToSuperview().offset(20)
+            $0.right.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview()
+        }
     }
 }
-
 
 extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,8 +92,10 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = searchResults[indexPath.row]
+        let welcome = searchResults[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
+        cell.label.text = welcome.city.name
+        cell.iconImageView.image = welcome.weather.icon
         return cell
     }
 }
@@ -79,10 +107,6 @@ extension MapViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         if let text = textField.text, !text.isEmpty {
-            // Add the address to search results
-            searchResults.append(text)
-            tableView.reloadData()
-            
             // Search for the address and update the map
             AddressDecoder.getGeocodeAddress(query: text) { [weak self] result in
                 guard let self = self else { return }
@@ -93,6 +117,18 @@ extension MapViewController: UITextFieldDelegate {
                             print("Latitude: \(latitude), Longitude: \(longitude)")
                             DispatchQueue.main.async {
                                 self.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)), animated: true)
+                            }
+                            weatherService.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 1)) { result in
+                                switch result {
+                                case .success(let response):
+                                    let weatherData = try? JSONDecoder().decode(Welcome.self, from: response.data)
+                                    let weatherData2 = try? JSONDecoder().decode(Weather.self, from: response.data)
+                                    self.searchResults.append(weatherData!)
+                                    self.searchResults.append(weatherData2)
+                                    self.tableView.reloadData()
+                                    case . failure(let error):
+                                    break
+                                }
                             }
                             let userInfo: [String: Any] = ["address": firstAddress.jibunAddress, "latitude": latitude, "longitude": longitude]
                             NotificationCenter.default.post(name: .didUpdateLocationForWeather, object: nil, userInfo: userInfo)
