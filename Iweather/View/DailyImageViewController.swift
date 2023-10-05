@@ -26,7 +26,6 @@ class DailyImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateBackgroundImage()
-
         view.addSubview(currentLocation)
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationUpdate(_:)), name: .didUpdateLocation, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleWeatherLocationUpdate(_:)), name: .didUpdateLocationForWeather, object: nil)
@@ -42,6 +41,7 @@ class DailyImageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         animateDayViews()
+        
     }
     
     func updateWeatherData(latitude: Double, longitude: Double) {
@@ -83,7 +83,7 @@ class DailyImageViewController: UIViewController {
         
         if currentTime >= sunriseTime && currentTime <= sunsetTime {
             let backgroundImage = UIImageView(frame: view.bounds)
-            backgroundImage.image = UIImage(named: "clearSky")
+            backgroundImage.image = UIImage(named: "clearsky")
             backgroundImage.alpha = 0.7
             backgroundImage.contentMode = .scaleAspectFill
             view.addSubview(backgroundImage)
@@ -187,7 +187,7 @@ class DailyImageViewController: UIViewController {
             let backgroundView = UIView()
              backgroundView.translatesAutoresizingMaskIntoConstraints = false
              backgroundView.backgroundColor = .black
-             backgroundView.alpha = 0.3
+             backgroundView.alpha = 0.5
             backgroundView.clipsToBounds = true
 
              dayView.addSubview(backgroundView)
@@ -217,7 +217,7 @@ class DailyImageViewController: UIViewController {
             let highTemperatureLabel = UILabel()
             highTemperatureLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
             highTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
-            highTemperatureLabel.text = "최고 \n30°C" // 예시로 30도로 설정, 실제로는 API 데이터 사용
+            highTemperatureLabel.text = "최고 \n30°C" // 예시
             highTemperatureLabel.numberOfLines = 0
 
             highTemperatureLabel.textAlignment = .center
@@ -226,7 +226,7 @@ class DailyImageViewController: UIViewController {
             let lowTemperatureLabel = UILabel()
             lowTemperatureLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
             lowTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
-            lowTemperatureLabel.text = "최저 \n20°C" // 예시로 20도로 설정, 실제로는 API 데이터 사용
+            lowTemperatureLabel.text = "최저 \n20°C" // 예시
             lowTemperatureLabel.numberOfLines = 0
             lowTemperatureLabel.textAlignment = .center
             
