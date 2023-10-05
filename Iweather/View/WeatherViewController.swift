@@ -219,7 +219,7 @@ class WeatherViewController: UIViewController {
         
         
         if currentTime >= sunriseTime && currentTime <= sunsetTime {
-            TodayWeatherImageView.image = UIImage(named: "clearSky")
+            TodayWeatherImageView.image = UIImage(named: "clearsky")
         } else {
             TodayWeatherImageView.image = UIImage(named: "evening")
         }
