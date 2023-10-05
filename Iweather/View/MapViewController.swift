@@ -8,13 +8,16 @@
 import UIKit
 import MapKit
 import SnapKit
+import Moya
 
 class MapViewController: UIViewController {
+
+    private let weatherService = MoyaProvider<WeatherAPI>(plugins: [NetworkLoggerPlugin()])
 
     var mapView: MKMapView!
     var textField: UITextField!
     var tableView: UITableView!
-    var searchResults: [String] = []
+    var searchResults = [Welcome]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,9 +92,10 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let welcome = searchResults[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
-        cell.label.text = searchResults[indexPath.row]
-        cell.iconImageView.image = UIImage(named: "background5")
+        cell.label.text = welcome.city.name
+        cell.iconImageView.image = welcome.weather.icon
         return cell
     }
 }
@@ -103,9 +107,6 @@ extension MapViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         if let text = textField.text, !text.isEmpty {
-            searchResults.append(text)
-            tableView.reloadData()
-            
             // Search for the address and update the map
             AddressDecoder.getGeocodeAddress(query: text) { [weak self] result in
                 guard let self = self else { return }
@@ -116,6 +117,18 @@ extension MapViewController: UITextFieldDelegate {
                             print("Latitude: \(latitude), Longitude: \(longitude)")
                             DispatchQueue.main.async {
                                 self.mapView.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)), animated: true)
+                            }
+                            weatherService.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 1)) { result in
+                                switch result {
+                                case .success(let response):
+                                    let weatherData = try? JSONDecoder().decode(Welcome.self, from: response.data)
+                                    let weatherData2 = try? JSONDecoder().decode(Weather.self, from: response.data)
+                                    self.searchResults.append(weatherData!)
+                                    self.searchResults.append(weatherData2)
+                                    self.tableView.reloadData()
+                                    case . failure(let error):
+                                    break
+                                }
                             }
                             let userInfo: [String: Any] = ["address": firstAddress.jibunAddress, "latitude": latitude, "longitude": longitude]
                             NotificationCenter.default.post(name: .didUpdateLocationForWeather, object: nil, userInfo: userInfo)
