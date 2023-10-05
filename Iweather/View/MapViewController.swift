@@ -7,13 +7,14 @@
 
 import UIKit
 import MapKit
+import SnapKit
 
 class MapViewController: UIViewController {
 
     var mapView: MKMapView!
     var textField: UITextField!
     var tableView: UITableView!
-    var searchResults: [String] = []  // Data source for the table view
+    var searchResults: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,41 +25,63 @@ class MapViewController: UIViewController {
     }
 
     func setupBackgroundImage() {
-        // Set the background image
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: "background5") // Replace with your image name
-        backgroundImage.contentMode = UIView.ContentMode.scaleAspectFill
+        backgroundImage.image = UIImage(named: "background5")
+        backgroundImage.contentMode = .scaleAspectFill
         self.view.insertSubview(backgroundImage, at: 0)
+        backgroundImage.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     func setupMapView() {
-        mapView = MKMapView(frame: CGRect(x: 20, y: 70, width: view.frame.width - 40, height: 300))
+        mapView = MKMapView()
         mapView.mapType = .standard
         mapView.showsUserLocation = true
         mapView.layer.cornerRadius = 10.0
         mapView.layer.masksToBounds = true
         view.addSubview(mapView)
+
+        mapView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(70)
+            $0.left.equalToSuperview().offset(20)
+            $0.right.equalToSuperview().offset(-20)
+            $0.height.equalTo(300)
+        }
     }
 
     func setupTextField() {
-        textField = UITextField(frame: CGRect(x: 20, y: 380, width: view.frame.width - 40, height: 40))
+        textField = UITextField()
         textField.backgroundColor = .white
         textField.placeholder = "주소를 입력하세요."
         textField.delegate = self
         textField.layer.cornerRadius = 10.0
         view.addSubview(textField)
+
+        textField.snp.makeConstraints {
+            $0.top.equalTo(mapView.snp.bottom).offset(10)
+            $0.left.equalToSuperview().offset(20)
+            $0.right.equalToSuperview().offset(-20)
+            $0.height.equalTo(40)
+        }
     }
 
     func setupTableView() {
-        tableView = UITableView(frame: CGRect(x: 20, y: 430, width: view.frame.width - 40, height: view.frame.height - 430))
+        tableView = UITableView()
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
+
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(textField.snp.bottom).offset(10)
+            $0.left.equalToSuperview().offset(20)
+            $0.right.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview()
+        }
     }
 }
-
 
 extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,8 +89,9 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = searchResults[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
+        cell.label.text = searchResults[indexPath.row]
+        cell.iconImageView.image = UIImage(named: "background5")
         return cell
     }
 }
@@ -79,7 +103,6 @@ extension MapViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         if let text = textField.text, !text.isEmpty {
-            // Add the address to search results
             searchResults.append(text)
             tableView.reloadData()
             
