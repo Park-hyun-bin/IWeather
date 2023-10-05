@@ -3,9 +3,9 @@ import UIKit
 import Moya
 
 class DailyImageViewController: UIViewController {
-    
+
     private let weatherProvider = MoyaProvider<WeatherAPI>()
-    
+
     private var dayViews: [UIView] = []
     private var highTemperatureLabels: [UILabel] = []
     private var lowTemperatureLabels: [UILabel] = []
@@ -20,9 +20,9 @@ class DailyImageViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // 일몰, 일출시간 맞춰 백그라운드 이미지 변경, 최저최고기온 레이블글자 추가
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         updateBackgroundImage()
@@ -35,15 +35,15 @@ class DailyImageViewController: UIViewController {
         }
         setupDayViews()
         setupLayout()
-        
+
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         animateDayViews()
-        
+
     }
-    
+
     func updateWeatherData(latitude: Double, longitude: Double) {
         weatherProvider.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 4)) { [weak self] result in
             switch result {
@@ -52,12 +52,12 @@ class DailyImageViewController: UIViewController {
                     let weatherData = try JSONDecoder().decode(Welcome.self, from: response.data)
                     for (index, dayWeather) in weatherData.list.prefix(4).enumerated() {
                         DispatchQueue.main.async {
-                            
+
                             self?.highTemperatureLabels[index].text = "최고\n\(dayWeather.main.tempMax)°C"
                             self?.lowTemperatureLabels[index].text = "최저\n\(dayWeather.main.tempMin)°C"
 
                             self?.humidityLabels[index].text = "습도 : \(dayWeather.main.humidity)%"
-                            
+
                             if let weather = dayWeather.weather.first {
                                 let imageName = self?.imageNameForWeather(weather)
                                 self?.weatherImageViews[index].image = UIImage(named: imageName ?? "defaultImage")
@@ -65,7 +65,7 @@ class DailyImageViewController: UIViewController {
                             }
                         }
                     }
-                    
+
                 } catch {
                     print("Error decoding weather data: \(error)")
                 }
@@ -80,7 +80,7 @@ class DailyImageViewController: UIViewController {
         let currentTime = WeatherUtility.getCurrentTime()
         let sunriseTime = WeatherUtility.getSunriseTime()
         let sunsetTime = WeatherUtility.getSunsetTime()
-        
+
         if currentTime >= sunriseTime && currentTime <= sunsetTime {
             let backgroundImage = UIImageView(frame: view.bounds)
             backgroundImage.image = UIImage(named: "clearsky")
@@ -98,14 +98,14 @@ class DailyImageViewController: UIViewController {
         }
     }
 
-    
+
     private func animateDayViews() {
         for dayView in dayViews {
             dayView.alpha = 0.0
         }
         currentLocation.alpha = 0.0
-        
-        
+
+
         UIView.animate(withDuration: 0.6, delay: 0.1, options: .curveEaseIn, animations: { [weak self] in
             for dayView in self?.dayViews ?? [] {
                 dayView.alpha = 0.8
@@ -113,11 +113,11 @@ class DailyImageViewController: UIViewController {
             self?.currentLocation.alpha = 0.9
                 }, completion: nil)
     }
-    
+
     @objc func handleWeatherLocationUpdate(_ notification: Notification) {
         if let latitude = notification.userInfo?["latitude"] as? Double,
            let longitude = notification.userInfo?["longitude"] as? Double {
-            
+
             UserDefaultsManager.shared.saveLastSearchedLocation(latitude: latitude, longitude: longitude, address: currentLocation.text ?? "")
             updateWeatherData(latitude: latitude, longitude: longitude)
         }
@@ -156,11 +156,11 @@ class DailyImageViewController: UIViewController {
             return "defaultImage"
         }
     }
-    
-    
+
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         for dayView in dayViews {
             if let backgroundView = dayView.subviews.compactMap({ $0 as? UIView }).first {
                 backgroundView.layer.cornerRadius = 20
@@ -168,22 +168,22 @@ class DailyImageViewController: UIViewController {
         }
     }
 
-    
+
     private func setupDayViews() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "d일"
-        
+
         let dayOfWeekFormatter = DateFormatter()
         dayOfWeekFormatter.dateFormat = "E"
         dayOfWeekFormatter.locale = Locale(identifier: "ko_KR")
-        
+
         let currentDate = Date()
         let calendar = Calendar.current
-        
+
         for i in 0..<4 {
             let dayView = UIView()
             dayView.translatesAutoresizingMaskIntoConstraints = false
-            
+
             let backgroundView = UIView()
              backgroundView.translatesAutoresizingMaskIntoConstraints = false
              backgroundView.backgroundColor = .black
@@ -191,29 +191,29 @@ class DailyImageViewController: UIViewController {
             backgroundView.clipsToBounds = true
 
              dayView.addSubview(backgroundView)
-             
-            
+
+
             let date = calendar.date(byAdding: .day, value: i, to: currentDate)!
             let dateString = dateFormatter.string(from: date)
             let dayOfWeekString = dayOfWeekFormatter.string(from: date)
-            
+
 
             let dayLabel = UILabel()
             dayLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
             dayLabel.text = dateString
             dayLabel.translatesAutoresizingMaskIntoConstraints = false
-            
+
             let dayOfWeekLabel = UILabel()
             dayOfWeekLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
             dayOfWeekLabel.text = dayOfWeekString
             dayOfWeekLabel.translatesAutoresizingMaskIntoConstraints = false
-            
+
             let weatherImageView = UIImageView()
             weatherImageViews.append(weatherImageView)
             weatherImageView.translatesAutoresizingMaskIntoConstraints = false
 //            weatherImageView.image = UIImage(named: "raining")
             weatherImageView.contentMode = .scaleAspectFit
-            
+
             let highTemperatureLabel = UILabel()
             highTemperatureLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
             highTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -221,28 +221,28 @@ class DailyImageViewController: UIViewController {
             highTemperatureLabel.numberOfLines = 0
 
             highTemperatureLabel.textAlignment = .center
-            
-            
+
+
             let lowTemperatureLabel = UILabel()
             lowTemperatureLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
             lowTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
             lowTemperatureLabel.text = "최저 \n20°C" // 예시
             lowTemperatureLabel.numberOfLines = 0
             lowTemperatureLabel.textAlignment = .center
-            
+
             let humidityLabel = UILabel()
             humidityLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
             humidityLabel.translatesAutoresizingMaskIntoConstraints = false
             humidityLabel.text = "습도 : 80%"
             humidityLabel.textAlignment = .center
-            
+
             highTemperatureLabels.append(highTemperatureLabel)
             lowTemperatureLabels.append(lowTemperatureLabel)
             humidityLabels.append(humidityLabel)
 
-            
 
-            
+
+
             let labels = [dayLabel, dayOfWeekLabel, highTemperatureLabel, lowTemperatureLabel, humidityLabel]
             for label in labels {
                 label.textColor = .white
@@ -253,7 +253,7 @@ class DailyImageViewController: UIViewController {
             dayView.addSubview(dayOfWeekLabel)
             dayView.addSubview(weatherImageView)
             dayView.addSubview(humidityLabel)
-            
+
             NSLayoutConstraint.activate([
                 dayLabel.centerXAnchor.constraint(equalTo: dayView.centerXAnchor),
                 dayLabel.topAnchor.constraint(equalTo: dayView.topAnchor, constant: 15),
@@ -273,8 +273,8 @@ class DailyImageViewController: UIViewController {
                  backgroundView.trailingAnchor.constraint(equalTo: dayView.trailingAnchor),
                  backgroundView.topAnchor.constraint(equalTo: dayView.topAnchor),
                  backgroundView.bottomAnchor.constraint(equalTo: dayView.bottomAnchor)
-            
-                
+
+
             ])
 //            dayView.addSubview(weatherImageView)
 //            dayView.addSubview(highTemperatureLabel)
@@ -282,17 +282,17 @@ class DailyImageViewController: UIViewController {
             view.addSubview(dayView)
         }
     }
-    
+
 
 
     private func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
-        
+
         NSLayoutConstraint.activate([
             currentLocation.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             currentLocation.topAnchor.constraint(equalTo: safeArea.topAnchor)
         ])
-        
+
         let spacing: CGFloat = 5
         let dayViewWidth: CGFloat = (view.frame.width - spacing * 3) / 4
         var previousView: UIView?
@@ -302,7 +302,7 @@ class DailyImageViewController: UIViewController {
                 dayView.topAnchor.constraint(equalTo: currentLocation.bottomAnchor, constant: 20),
                 view.bottomAnchor.constraint(equalTo: dayView.bottomAnchor, constant: 120)
             ])
-            
+
             if let previousView = previousView {
                 dayView.leadingAnchor.constraint(equalTo: previousView.trailingAnchor, constant: spacing).isActive = true
             } else {

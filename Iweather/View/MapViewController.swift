@@ -95,7 +95,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         let welcome = searchResults[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
         cell.label.text = welcome.city.name
-        cell.iconImageView.image = welcome.weather.icon
+        cell.iconImageView.image = $0.weather[0].icon
         return cell
     }
 }

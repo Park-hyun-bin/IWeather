@@ -8,7 +8,7 @@ class WeatherViewController: UIViewController {
     
     private let TodayWeatherImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFit
         imageView.alpha = 0.0
         imageView.image = UIImage(named: "clearSky")
         
