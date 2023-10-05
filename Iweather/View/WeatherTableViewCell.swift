@@ -31,7 +31,6 @@ class WeatherTableViewCell: UITableViewCell {
         dateLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
             $0.centerY.equalToSuperview()
-            
         }
         
         weatherImageView.snp.makeConstraints {

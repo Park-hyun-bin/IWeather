@@ -8,7 +8,7 @@ class WeatherViewController: UIViewController {
     
     private let TodayWeatherImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.alpha = 0.0
         imageView.image = UIImage(named: "clearSky")
         
@@ -69,6 +69,9 @@ class WeatherViewController: UIViewController {
         let exclude = "hourly,daily"
         getWeatherData(exclude: exclude)
         FCChangeButton.addTarget(self, action: #selector(FCChange), for: .touchUpInside)
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         animationImageView()
     }
     
@@ -143,7 +146,7 @@ class WeatherViewController: UIViewController {
     
     private func getWeatherData(exclude: String) {
         print("요청중")
-        weatherService.request(.getWeatherForCity("seoul", days: 5)) { result in
+        weatherService.request(.getWeatherForCity("busan", days: 5)) { result in
             switch result {
             case let .success(response):
                 do {
@@ -219,7 +222,7 @@ class WeatherViewController: UIViewController {
         
         
         if currentTime >= sunriseTime && currentTime <= sunsetTime {
-            TodayWeatherImageView.image = UIImage(named: "clearsky")
+            TodayWeatherImageView.image = UIImage(named: "clearSky")
         } else {
             TodayWeatherImageView.image = UIImage(named: "evening")
         }
@@ -233,6 +236,13 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = .clear
+        cell.alpha = 0.0
+        cell.transform = CGAffineTransform(translationX: 0, y: 20)
+
+        UIView.animate(withDuration: 0.5, delay: 0.1 * Double(indexPath.row), animations: {
+            cell.alpha = 1.0
+            cell.transform = CGAffineTransform.identity
+        })
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -45,7 +45,7 @@ extension WeatherAPI: TargetType {
                 "appid": "e8aeafe9abc4ec56d53a28782b1991f8",
                 "units": "metric", // 온도를 섭씨로
                 "lang": "kr", // 한국어로
-                "cnt": 40
+                "daily": 5
             ]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         case .getWeatherForLocation(let latitude, let longitude, let days): // 새로운 케이스에 대한 처리
