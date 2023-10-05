@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 import SnapKit
 import Moya
+import Kingfisher
 
 class MapViewController: UIViewController {
 
@@ -18,6 +19,7 @@ class MapViewController: UIViewController {
     var textField: UITextField!
     var tableView: UITableView!
     var searchResults = [Welcome]()
+    var searchResults2 = [Weather]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,9 +95,11 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let welcome = searchResults[indexPath.row]
+        let weather = searchResults2[indexPath.row]
+        let url = URL(string: "https://openweathermap.org/img/w/\(weather.icon).png")
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
         cell.label.text = welcome.city.name
-        cell.iconImageView.image = welcome.weather.icon
+        cell.iconImageView.kf.setImage(with: url)
         return cell
     }
 }
@@ -121,10 +125,13 @@ extension MapViewController: UITextFieldDelegate {
                             weatherService.request(.getWeatherForLocation(latitude: latitude, longitude: longitude, days: 1)) { result in
                                 switch result {
                                 case .success(let response):
+                                    let welcomedata = try? JSONDecoder().decode(Welcome.self, from: response.data)
                                     let weatherData = try? JSONDecoder().decode(Welcome.self, from: response.data)
-                                    let weatherData2 = try? JSONDecoder().decode(Weather.self, from: response.data)
-                                    self.searchResults.append(weatherData!)
-                                    self.searchResults.append(weatherData2)
+                                    if let firstList = weatherData?.list.first, let firstWeather = firstList.weather.first{
+                                        print(weatherData)
+                                        print("닐값이 안떠야함")
+                                        self.searchResults.append(welcomedata!)
+                                        self.searchResults2.append(firstWeather)}
                                     self.tableView.reloadData()
                                     case . failure(let error):
                                     break
