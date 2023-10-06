@@ -28,7 +28,7 @@ class RecomanndViewController: UIViewController {
     
     private var commentContainer: UIView = {
         let commentContainer = UIView()
-        commentContainer.backgroundColor = .white
+        commentContainer.backgroundColor = .black
         commentContainer.layer.cornerRadius = 10
         commentContainer.clipsToBounds = true
         commentContainer.alpha = 0.3
@@ -44,7 +44,7 @@ class RecomanndViewController: UIViewController {
     
     private var recoView: UIImageView = {
         let recoView = UIImageView()
-        recoView.alpha = 0.6
+//        recoView.alpha = 0.6
         recoView.layer.cornerRadius = 10
         recoView.clipsToBounds = true
         return recoView
@@ -52,7 +52,7 @@ class RecomanndViewController: UIViewController {
     
     private var textContainer: UIView = {
         let textContainer = UIView()
-        textContainer.backgroundColor = .white
+        textContainer.backgroundColor = .black
         textContainer.layer.cornerRadius = 10
         textContainer.clipsToBounds = true
         textContainer.alpha = 0.3
