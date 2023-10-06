@@ -89,39 +89,40 @@ class MapViewController: UIViewController {
     }
 }
 
+//func animate(withGIFNamed imageName: String, loopCount: Int = 0, preparationBlock: (() -> Void)? = nil, animationBlock: (() -> Void)? = nil) {
+//  animator?.animate(withGIFNamed: imageName,
+//                    size: frame.size,
+//                    contentMode: contentMode,
+//                    loopCount: loopCount,
+//                    preparationBlock: preparationBlock,
+//                    animationBlock: animationBlock)
+//}
+
 extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Create a cell instance
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
         
-        // Fetch the data for the cell
         let welcome = searchResults[indexPath.row]
         let weather = searchResults2[indexPath.row]
         
-        // Set the label text
         cell.label.text = welcome.city.name
         
-        // Load the GIF into iconImageView
-        let gifUrlString = "https://example.com/your-gif.gif" // Replace with your GIF URL
-        if let gifUrl = URL(string: gifUrlString) {
-            cell.iconImageView.animate(withGIFNamed: "drizzle")
+        // Get the URL for the gif file in the project
+        if let gifUrl = Bundle.main.url(forResource: "rain", withExtension: "gif") {
+            cell.backgroundImageView.animate(withGIFURL: gifUrl)
         }
         
-        // Load the weather icon into iconImageView
         if let weatherIconUrl = URL(string: "https://openweathermap.org/img/w/\(weather.icon).png") {
             cell.iconImageView.kf.setImage(with: weatherIconUrl)
         }
         
-        // Return the configured cell
         return cell
     }
-
 }
-
 
 
 
