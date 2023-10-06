@@ -14,7 +14,6 @@ class TabBarController: UITabBarController {
 
         // 탭 바 아이콘 및 타이틀 설정
         let tabs: [(root: UIViewController, icon: String, title: String)] = [
-            (MainViewController(), "house", "홈"),
             (WeatherViewController(), "sun.max", "날씨"),
             (DailyImageViewController(), "calendar", "일별 이미지"),
             (MapViewController(), "map", "지도")
