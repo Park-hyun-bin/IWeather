@@ -28,8 +28,8 @@ class RecomanndViewController: UIViewController {
     
     private var commentContainer: UIView = {
         let commentContainer = UIView()
-        commentContainer.backgroundColor = .white
-        commentContainer.layer.cornerRadius = 10
+        commentContainer.backgroundColor = .black
+        commentContainer.layer.cornerRadius = 20
         commentContainer.clipsToBounds = true
         commentContainer.alpha = 0.3
         return commentContainer
@@ -44,16 +44,15 @@ class RecomanndViewController: UIViewController {
     
     private var recoView: UIImageView = {
         let recoView = UIImageView()
-        recoView.alpha = 0.6
-        recoView.layer.cornerRadius = 10
+        recoView.layer.cornerRadius = 20
         recoView.clipsToBounds = true
         return recoView
     }()
     
     private var textContainer: UIView = {
         let textContainer = UIView()
-        textContainer.backgroundColor = .white
-        textContainer.layer.cornerRadius = 10
+        textContainer.backgroundColor = .black
+        textContainer.layer.cornerRadius = 20
         textContainer.clipsToBounds = true
         textContainer.alpha = 0.3
         return textContainer
@@ -190,7 +189,7 @@ extension RecomanndViewController {
             menu2 = "맥주 한잔"
         case 15..<20:
             imageName = "cool"
-            comment = "소풍 가기"
+            comment = "피크닉 가기"
             menu1 = "돗자리 펴고 김밥과"
             menu2 = "샌드위치"
         case 20..<26:
