@@ -67,14 +67,13 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         let exclude = "hourly,daily"
-        getWeatherData(exclude: exclude)
+        getWeatherData("busan")
         FCChangeButton.addTarget(self, action: #selector(FCChange), for: .touchUpInside)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animationImageView()
     }
-    
     private func configureUI() {
         view.addSubview(TodayWeatherImageView)
         view.addSubview(cityNameLabel)
@@ -144,7 +143,7 @@ class WeatherViewController: UIViewController {
         })
     }
     
-    private func getWeatherData(exclude: String) {
+    private func getWeatherData(_ cityName: String) {
         print("요청중")
         weatherService.request(.getWeatherForCity("busan", days: 5)) { result in
             switch result {
@@ -161,6 +160,27 @@ class WeatherViewController: UIViewController {
                 self.showError(message: "날씨 정보를 가져오는 중 오류가 발생했습니다: \(error.localizedDescription)")
                 print("네트워크 에러: \(error)")
             }
+        }
+        func CityInputDialog() {
+            let alertController = UIAlertController(title: "도시 이름 입력", message: "원하는 도시의 이름을 입력하세요.", preferredStyle: .alert)
+
+            alertController.addTextField { textField in
+                textField.placeholder = "도시 이름"
+            }
+
+            let confirmAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+                if let cityName = alertController.textFields?.first?.text, !cityName.isEmpty {
+                    // 도시 이름이 입력되었을 때 API 요청을 보냅니다.
+                    self?.getWeatherData("busan")
+                }
+            }
+
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+
+            present(alertController, animated: true, completion: nil)
         }
     }
     
