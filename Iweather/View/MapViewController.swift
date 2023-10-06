@@ -10,6 +10,7 @@ import MapKit
 import SnapKit
 import Moya
 import Kingfisher
+import Gifu
 
 class MapViewController: UIViewController {
 
@@ -94,14 +95,31 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Create a cell instance
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
+        
+        // Fetch the data for the cell
         let welcome = searchResults[indexPath.row]
         let weather = searchResults2[indexPath.row]
-        let url = URL(string: "https://openweathermap.org/img/w/\(weather.icon).png")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
+        
+        // Set the label text
         cell.label.text = welcome.city.name
-        cell.iconImageView.kf.setImage(with: url)
+        
+        // Load the GIF into iconImageView
+        let gifUrlString = "https://example.com/your-gif.gif" // Replace with your GIF URL
+        if let gifUrl = URL(string: gifUrlString) {
+            cell.iconImageView.animate(withGIFNamed: "drizzle")
+        }
+        
+        // Load the weather icon into iconImageView
+        if let weatherIconUrl = URL(string: "https://openweathermap.org/img/w/\(weather.icon).png") {
+            cell.iconImageView.kf.setImage(with: weatherIconUrl)
+        }
+        
+        // Return the configured cell
         return cell
     }
+
 }
 
 
